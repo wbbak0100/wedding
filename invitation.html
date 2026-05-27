@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>백승상 & 김효진 결혼합니다</title>
-    <!-- 구글 폰트 적용 (나눔명조, 본고딕) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
     
-    <!-- 카카오맵 API 라이브러리 로드 -->
-    <!-- ※ 실제 배포 시 'YOUR_KAKAO_MAP_API_KEY' 부분을 발급받으신 자바스크립트 키로 변경해주세요. -->
-    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_KAKAO_MAP_API_KEY"></script>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=80c60a31a6631756bbf915ed70ed3e47"></script>
 
     <style>
         /* 기본 스타일 초기화 (투어게스트 하이엔드 모드) */
@@ -236,7 +233,6 @@
 </head>
 <body>
 
-    <!-- 배경 음악 플레이어 -->
     <div class="bgm-container">
         BGM: Photograph 
         <audio id="bgm" src="Photograph.mp3" autoplay loop controls style="display:none;"></audio>
@@ -245,7 +241,6 @@
 
     <div class="container">
         
-        <!-- 1. 메인 섹션 -->
         <section class="main-sec">
             <h1 class="title-serif">백승상 & 김효진</h1>
             <p class="date">2026. 10. 31. SAT. 11:00 AM</p>
@@ -260,7 +255,6 @@
             </div>
         </section>
 
-        <!-- 2. 초대글 및 인사말 -->
         <section class="intro-sec">
             <h2 class="title-serif" style="margin-bottom: 35px; font-size: 17px; color: #777; letter-spacing: 0.1em;">INVITATION</h2>
             
@@ -277,7 +271,6 @@
             </div>
         </section>
 
-        <!-- 3. 연락하기 연락처 연동 -->
         <section>
             <h2 class="title-serif" style="margin-bottom: 30px; font-size: 16px; color:#777; letter-spacing:0.05em;">CONTACT</h2>
             <div style="margin-bottom: 16px; font-size: 13px;">
@@ -292,7 +285,6 @@
             </div>
         </section>
 
-        <!-- 4. 갤러리 -->
         <section>
             <h2 class="title-serif" style="margin-bottom: 30px; font-size: 16px; color:#777; letter-spacing: 0.1em;">MOMENTS</h2>
             <div class="gallery-grid">
@@ -303,19 +295,16 @@
             </div>
         </section>
 
-        <!-- 5. 오시는 길 -->
         <section>
             <h2 class="title-serif" style="font-size: 16px; margin-bottom: 25px; color:#777; letter-spacing: 0.1em;">LOCATION</h2>
             <p style="font-weight: 400; font-size: 15px; color:#111;">노블레스웨딩컨벤션 7층 컨벤션홀</p>
             <p style="font-size: 12px; color:#777; margin-top: 5px;">경기 수원시 팔달구 팔달문로 128</p>
 
-            <!-- 동적 카카오맵 컨테이너 -->
             <div class="map-container">
                 <div class="map-loading-text">🗺️ KAKAO MAP LOADING...</div>
                 <div id="kakao-map"></div>
             </div>
 
-            <!-- 하단 맵 전환 내비게이션 버튼 -->
             <div class="map-navigation-buttons">
                 <a href="https://naver.me/57VZk9UM" target="_blank" class="navi-btn">NAVER MAP</a>
                 <a href="https://map.kakao.com/link/to/노블레스웨딩컨벤션,37.279883,127.039203" target="_blank" class="navi-btn">KAKAO MAP</a>
@@ -327,7 +316,6 @@
             </div>
         </section>
 
-        <!-- 6. 마음 전하실 곳 -->
         <section>
             <h2 class="title-serif" style="margin-bottom: 25px; font-size: 16px; color:#777; letter-spacing: 0.1em;">GROOM'S ACCOUNT</h2>
             <div class="account-box">
@@ -340,7 +328,6 @@
             </div>
         </section>
 
-        <!-- 7. 참석 여부 전달 및 공유 -->
         <section style="border-bottom: none; padding-bottom: 20px;">
             <div class="missing-info" style="font-size:11px; margin-bottom:8px; letter-spacing:0.02em;">[카카오톡 공유 링크 API 미기입]</div>
             <a href="#" onclick="alert('카카오톡 공유 링크가 아직 설정되지 않았습니다.'); return false;" class="share-btn">SHARE VIA KAKAOTALK</a>
@@ -358,7 +345,7 @@
     </div>
 
     <script>
-        // 카카오 지도를 초기화하는 렌더링 스크립트
+        // 🗺️ 카카오 지도를 초기화 및 마커 렌더링 스크립트
         try {
             const container = document.getElementById('kakao-map');
             const options = {
@@ -373,7 +360,7 @@
             });
             marker.setMap(map);
         } catch (e) {
-            console.log("카카오맵 로드 중 에러 발생: API 키 등록 상태를 확인해 주세요.");
+            console.log("카카오맵 로드 중 에러 발생: API 키 등록 상태와 도메인 설정을 확인해 주세요.");
         }
 
         // D-Day 카운트다운 스크립트
