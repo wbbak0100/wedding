@@ -4,26 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>백승상 & 김효진 결혼합니다</title>
-    <!-- 구글 폰트 적용 (나눔명조, 본고딕) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        /* 기본 스타일 초기화 (투어게스트 하이엔드 모드) */
+        /* 기본 스타일 초기화 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #f7f7f7; /* 프리미엄 라이트 실버 */
             color: #2b2b2b; /* 깊이감 있는 딥 차콜 */
             line-height: 1.8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             letter-spacing: -0.02em;
         }
         
-        /* 모바일 청첩장 컨테이너 */
+        /* 모바일 청첩장 컨테이너 외곽 배치 */
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
         .container {
             width: 100%;
             max-width: 450px;
@@ -31,11 +34,11 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.03);
             text-align: center;
             position: relative;
-            padding-bottom: 80px;
+            padding-bottom: 60px;
         }
 
         section { 
-            padding: 70px 30px; 
+            padding: 70px 24px; 
             border-bottom: 1px solid #eaeaea; /* 투어게스트 시그니처 은색 실선 */
         }
         
@@ -45,9 +48,6 @@
             font-weight: 400; 
             letter-spacing: 0.05em;
         }
-        
-        /* 미입력 정보 빨간색 스타일 */
-        .missing-info { color: #e53e3e; font-weight: 500; font-size: 13px; }
 
         /* 배경음악 플레이어 고정 */
         .bgm-container {
@@ -57,6 +57,7 @@
             z-index: 1000;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             padding: 5px 12px;
             border-radius: 0px; 
             font-size: 10px;
@@ -99,16 +100,16 @@
         .dday-box span { font-size: 13px; font-weight: 700; color: #111; margin-left: 6px; }
 
         /* 2. 초대글 섹션 */
-        .intro-sec p { font-size: 14px; margin-bottom: 20px; color: #4a4a4a; line-height: 2.0; }
+        .intro-sec p { font-size: 13px; margin-bottom: 20px; color: #4a4a4a; line-height: 2.1; }
         .family-relation { 
             margin-top: 60px; 
-            font-size: 14px; 
+            font-size: 13px; 
             line-height: 2.4; 
-            color: #333; 
+            color: #555555; 
             border-top: 1px solid #f0f0f0; 
             padding-top: 40px; 
         }
-        .family-relation strong { color: #000000; font-weight: 400; }
+        .family-relation strong { color: #000000; font-weight: 700; }
 
         /* 3. 연락하기 섹션 */
         .contact-btn {
@@ -132,19 +133,13 @@
         .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 30px; }
         .gallery-grid img { width: 100%; height: 180px; object-fit: cover; border-radius: 0px; }
 
-        /* 5. 오시는 길 (네이버 지도 스타일 보완) */
-        .map-wrapper {
+        /* 5. 오시는 길 (카카오 지도가 들어갈 영역) */
+        .map-container {
             width: 100%;
             height: 280px;
             margin: 30px 0 15px 0;
             border: 1px solid #eaeaea;
             background-color: #fafafa;
-            overflow: hidden;
-        }
-        .map-wrapper iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
         }
         
         .map-navigation-buttons {
@@ -167,25 +162,118 @@
         }
         .navi-btn:hover { color: #111; background-color: #fafafa; }
 
-        /* 6. 마음 전하실 곳 */
-        .account-box {
-            background-color: #fafafa;
-            padding: 24px;
-            text-align: left;
-            margin-top: 25px;
-            border: 1px solid #eaeaea;
+        /* 교통안내 텍스트 디자인 */
+        .traffic-info {
+            text-align: left; 
+            margin-top: 35px; 
+            font-size: 12px; 
+            line-height: 2.0; 
+            color: #2b2b2b; 
+            border-top: 1px dashed #eaeaea; 
+            padding-top: 25px;
         }
-        .copy-btn {
-            float: right;
+        .traffic-info p { color: #2b2b2b; }
+        .traffic-info strong { color: #111; }
+
+        /* 6. 마음 전하실 곳 (팝업 버튼 디자인) */
+        .account-trigger-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 25px;
+            gap: 10px;
+        }
+        .account-trigger-btn {
+            flex: 1;
+            padding: 14px;
+            font-size: 12px;
             background-color: #ffffff;
-            color: #333333;
-            border: 1px solid #dcdcdc;
-            padding: 3px 10px;
+            color: #111111;
+            border: 1px solid #111111;
+            cursor: pointer;
+            letter-spacing: 0.05em;
+            transition: all 0.2s ease;
+        }
+        .account-trigger-btn:hover {
+            background-color: #111111;
+            color: #ffffff;
+        }
+
+        /* 팝업(모달) 전체 화면 배경 레이어 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* 어두운 투명 배경 */
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* 실제 작게 뜨는 팝업창 */
+        .modal-content {
+            background-color: #ffffff;
+            width: 85%;
+            max-width: 340px;
+            padding: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: left;
+            transform: translateY(10px);
+            transition: transform 0.25s ease;
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            font-size: 11px;
+            color: #888;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 6px;
+        }
+
+        .modal-body {
+            font-size: 14px;
+            color: #111;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .modal-body strong { font-weight: 700; }
+        .modal-body .acc-holder { font-size: 12px; color: #666; display: block; margin-top: 4px; }
+
+        .modal-footer {
+            display: flex;
+            gap: 6px;
+        }
+        .modal-footer button {
+            flex: 1;
+            padding: 10px;
             font-size: 11px;
             cursor: pointer;
             letter-spacing: 0.02em;
+            background: #fff;
+            border: 1px solid #dcdcdc;
+            color: #333;
         }
-        .copy-btn:hover { border-color: #111; color: #111; }
+        .modal-footer .btn-copy {
+            background-color: #111111;
+            color: #ffffff;
+            border-color: #111111;
+        }
+        .modal-footer button:hover { opacity: 0.8; }
 
         /* 하단 공유 및 폼 */
         .share-btn {
@@ -203,6 +291,12 @@
             padding: 30px 20px;
             margin-top: 30px;
         }
+        .survey-box p {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
         .survey-box button {
             padding: 10px 24px;
             border: 1px solid #111111;
@@ -214,142 +308,180 @@
             letter-spacing: 0.05em;
             transition: all 0.2s;
         }
-        .survey-box button:hover {
-            background: #111111;
-            color: #fff;
-        }
+        .survey-box button:hover { background: #111111; color: #fff; }
     </style>
 </head>
 <body>
 
-    <!-- 배경 음악 플레이어 -->
     <div class="bgm-container">
         BGM: Photograph 
         <audio id="bgm" src="Photograph.mp3" autoplay loop controls style="display:none;"></audio>
         <button onclick="toggleBgm()" id="bgmBtn" style="border:none; background:none; cursor:pointer; font-size:10px; color: #111; margin-left:4px;">PAUSE</button>
     </div>
 
-    <div class="container">
-        
-        <!-- 1. 메인 섹션 -->
-        <section class="main-sec">
-            <h1 class="title-serif">백승상 & 김효진</h1>
-            <p class="date">2026. 10. 31. SAT. 11:00 AM</p>
+    <div class="wrapper">
+        <div class="container">
             
-            <img src="main.jpg" alt="결혼식 메인 사진" class="main-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=500';">
-            
-            <p class="main-names title-serif">백승상 <small>(29)</small> — 김효진 <small>(27)</small></p>
-            <p style="margin-top: 12px; font-size: 13px; color: #666; letter-spacing: 0.02em;">노블레스웨딩컨벤션 7층 컨벤션홀</p>
+            <section class="main-sec">
+                <h1 class="title-serif">백승상 & 김효진</h1>
+                <p class="date">2026. 10. 31. SAT. 11:00 AM</p>
+                
+                <img src="main.jpg" alt="결혼식 메인 사진" class="main-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=500';">
+                
+                <p class="main-names title-serif">백승상 <small>(29)</small> — 김효진 <small>(27)</small></p>
+                <p style="margin-top: 12px; font-size: 13px; color: #666; letter-spacing: 0.02em;">노블레스웨딩컨벤션 7층 컨벤션홀</p>
 
-            <div class="dday-box title-serif">
-                COUNTDOWN <span id="dday-count">D-00</span>
-            </div>
-        </section>
+                <div class="dday-box title-serif">
+                    COUNTDOWN <span id="dday-count">D-00</span>
+                </div>
+            </section>
 
-        <!-- 2. 초대글 및 인사말 -->
-        <section class="intro-sec">
-            <h2 class="title-serif" style="margin-bottom: 35px; font-size: 17px; color: #777; letter-spacing: 0.1em;">INVITATION</h2>
-            
-            <p class="missing-info">
-                [임시 인사말]<br>
-                서로 다른 색으로 살아온 저희 두 사람이<br>
-                이제 하나의 아름다운 색으로 발맞추어 나아가려 합니다.<br>
-                새로운 출발의 자리에 오셔서 축복해 주시면 감사하겠습니다.
-            </p>
-
-            <div class="family-relation title-serif">
-                <div>신랑 아버지 <strong>백광현</strong> · 어머니 <strong>심지나</strong> 의 장남 <strong>승상</strong></div>
-                <div>신부 아버지 <strong>김재중</strong> · 어머니 <strong>오선영</strong> 의 장녀 <strong>효진</strong></div>
-            </div>
-        </section>
-
-        <!-- 3. 연락하기 연락처 연동 -->
-        <section>
-            <h2 class="title-serif" style="margin-bottom: 30px; font-size: 16px; color:#777; letter-spacing:0.05em;">CONTACT</h2>
-            <div style="margin-bottom: 16px; font-size: 13px;">
-                <span style="font-weight: 300; margin-right: 12px; color:#555;">신랑 백승상</span>
-                <a href="tel:010-8467-9367" class="contact-btn">CALL</a>
-                <a href="sms:010-8467-9367" class="contact-btn">MESSAGE</a>
-            </div>
-            <div style="font-size: 13px;">
-                <span style="font-weight: 300; margin-right: 12px; color:#555;">신부 김효진</span>
-                <a href="tel:010-9445-9806" class="contact-btn">CALL</a>
-                <a href="sms:010-9445-9806" class="contact-btn">MESSAGE</a>
-            </div>
-        </section>
-
-        <!-- 4. 갤러리 -->
-        <section>
-            <h2 class="title-serif" style="margin-bottom: 30px; font-size: 16px; color:#777; letter-spacing: 0.1em;">MOMENTS</h2>
-            <div class="gallery-grid">
-                <img src="photo1.jpg" onerror="this.src='https://images.unsplash.com/photo-1606800052052-a08af7148866?w=300';" alt="갤러리1">
-                <img src="photo2.jpg" onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=300';" alt="갤러리2">
-                <img src="photo3.jpg" onerror="this.src='https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=300';" alt="갤러리3">
-                <img src="photo4.jpg" onerror="this.src='https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=300';" alt="갤러리4">
-            </div>
-        </section>
-
-        <!-- 5. 오시는 길 -->
-        <section>
-            <h2 class="title-serif" style="font-size: 16px; margin-bottom: 25px; color:#777; letter-spacing: 0.1em;">LOCATION</h2>
-            <p style="font-weight: 400; font-size: 15px; color:#111;">노블레스웨딩컨벤션 7층 컨벤션홀</p>
-            <p style="font-size: 12px; color:#777; margin-top: 5px;">경기 수원시 팔달구 팔달문로 128</p>
-
-            <!-- 🗺️ 교체된 동적 네이버 지도 iframe 영역 -->
-            <div class="map-wrapper">
-                <iframe src="https://map.naver.com/v5/search/%EB%85%B8%EB%B8%94%EB%A0%88%EC%8A%A4%EC%9B%A8%EB%94%A9%EC%BB%A8%EB%B2%A4%EC%85%98" loading="lazy"></iframe>
-            </div>
-
-            <!-- 하단 맵 전환 내비게이션 버튼 -->
-            <div class="map-navigation-buttons">
-                <a href="https://naver.me/57VZk9UM" target="_blank" class="navi-btn">NAVER MAP</a>
-                <a href="https://map.kakao.com/link/to/노블레스웨딩컨벤션,37.279883,127.039203" target="_blank" class="navi-btn">KACOA MAP</a>
-            </div>
-
-            <div style="text-align: left; margin-top: 35px; font-size: 12px; line-height: 2.0; color: #555; border-top: 1px dashed #eaeaea; padding-top: 25px;">
-                <p><strong>🚘 주차 안내 —</strong> <span class="missing-info">[임시] 건물 내 지하주차장 및 외부 제2주차장 무료 이용 가능 (2시간 제공)</span></p>
-                <p style="margin-top: 10px;"><strong>🚌 셔틀 및 대중교통 —</strong> <span class="missing-info">[임시] 수원역 4번 출구에서 셔틀버스 상시 운행 / 팔달문역 하차 후 도보 5분</span></p>
-            </div>
-        </section>
-
-        <!-- 6. 마음 전하실 곳 -->
-        <section>
-            <h2 class="title-serif" style="margin-bottom: 25px; font-size: 16px; color:#777; letter-spacing: 0.1em;">GROOM'S ACCOUNT</h2>
-            <div class="account-box">
-                <p style="font-size: 11px; color:#888; margin-bottom: 8px; letter-spacing: 0.05em;">ACCOUNT NUMBER</p>
-                <p style="font-size: 13px; color: #111;">
-                    <strong>우리은행</strong> <span id="acc-num">10024307636729</span><br>
-                    <span style="font-size:12px; color:#666; display:inline-block; margin-top:4px;">예금주: 백승상</span>
-                    <button class="copy-btn" onclick="copyAccount()">COPY</button>
+            <section class="intro-sec">
+                <h2 class="title-serif" style="margin-bottom: 35px; font-size: 17px; color: #777; letter-spacing: 0.1em;">INVITATION</h2>
+                
+                <p>
+                    서로 다른 색으로 살아온 저희 두 사람이<br>
+                    이제 하나의 아름다운 색으로 발맞추어 나아가려 합니다.<br>
+                    새로운 출발의 자리에 오셔서 축복해 주시면 감사하겠습니다.
                 </p>
-            </div>
-        </section>
 
-        <!-- 7. 참석 여부 전달 및 공유 -->
-        <section style="border-bottom: none; padding-bottom: 20px;">
-            <div class="missing-info" style="font-size:11px; margin-bottom:8px; letter-spacing:0.02em;">[카카오톡 공유 링크 API 미기입]</div>
-            <a href="#" onclick="alert('카카오톡 공유 링크가 아직 설정되지 않았습니다.'); return false;" class="share-btn">SHARE VIA KAKAOTALK</a>
+                <div class="family-relation title-serif">
+                    <div>신랑 아버지 <strong>백광현</strong> · 어머니 <strong>심지나</strong> 의 장남 <strong>승상</strong></div>
+                    <div>신부 아버지 <strong>김재중</strong> · 어머니 <strong>오선영</strong> 의 장녀 <strong>효진</strong></div>
+                </div>
+            </section>
 
-            <div class="survey-box">
-                <h3 class="title-serif" style="font-size:14px; margin-bottom:12px; letter-spacing: 0.05em;">ATTENDANCE</h3>
-                <p class="missing-info" style="font-size: 12px; margin-bottom:20px; line-height: 1.8;">
-                    [임시 폼 문구]<br>
-                    식사 준비와 원활한 예식 진행을 위해<br>참석 여부를 미리 알려주시면 감사하겠습니다.
-                </p>
-                <button onclick="alert('서버가 없는 환경입니다. 구글 폼 링크 등을 연결해 사용하시는 것을 추천합니다.')">참석 명단 작성하기</button>
-            </div>
-        </section>
+            <section>
+                <h2 class="title-serif" style="margin-bottom: 30px; font-size: 16px; color:#777; letter-spacing:0.05em;">CONTACT</h2>
+                <div style="margin-bottom: 16px; font-size: 13px;">
+                    <span style="font-weight: 300; margin-right: 12px; color:#555;">신랑 백승상</span>
+                    <a href="tel:010-8467-9367" class="contact-btn">CALL</a>
+                    <a href="sms:010-8467-9367" class="contact-btn">MESSAGE</a>
+                </div>
+                <div style="font-size: 13px;">
+                    <span style="font-weight: 300; margin-right: 12px; color:#555;">신부 김효진</span>
+                    <a href="tel:010-9445-9806" class="contact-btn">CALL</a>
+                    <a href="sms:010-9445-9806" class="contact-btn">MESSAGE</a>
+                </div>
+            </section>
 
+            <section>
+                <h2 class="title-serif" style="margin-bottom: 30px; font-size: 16px; color:#777; letter-spacing: 0.1em;">MOMENTS</h2>
+                <div class="gallery-grid">
+                    <img src="photo1.jpg" onerror="this.src='https://images.unsplash.com/photo-1606800052052-a08af7148866?w=300';" alt="갤러리1">
+                    <img src="photo2.jpg" onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=300';" alt="갤러리2">
+                    <img src="photo3.jpg" onerror="this.src='https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=300';" alt="갤러리3">
+                    <img src="photo4.jpg" onerror="this.src='https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=300';" alt="갤러리4">
+                </div>
+            </section>
+
+            <section>
+                <h2 class="title-serif" style="font-size: 16px; margin-bottom: 25px; color:#777; letter-spacing: 0.1em;">LOCATION</h2>
+                <p style="font-weight: 400; font-size: 15px; color:#111;">노블레스웨딩컨벤션 7층 컨벤션홀</p>
+                <p style="font-size: 12px; color:#777; margin-top: 5px;">경기 수원시 팔달구 팔달문로 128</p>
+
+                <div id="daumKakaoMap" class="map-container"></div>
+
+                <div class="map-navigation-buttons">
+                    <a href="https://naver.me/57VZk9UM" target="_blank" class="navi-btn">NAVER MAP</a>
+                    <a href="https://map.kakao.com/link/to/노블레스웨딩컨벤션,37.279883,127.039203" target="_blank" class="navi-btn">KAKAO MAP</a>
+                </div>
+
+                <div class="traffic-info">
+                    <p><strong>🚘 주차 안내 —</strong> 건물 내 지하주차장 및 외부 제2주차장 무료 이용 가능 (2시간 제공)</p>
+                    <p style="margin-top: 10px;"><strong>🚌 셔틀 및 대중교통 —</strong> 수원역 4번 출구에서 셔틀버스 상시 운행 / 팔달문역 하차 후 도보 5분</p>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="title-serif" style="margin-bottom: 10px; font-size: 16px; color:#777; letter-spacing: 0.1em;">REGISTRY</h2>
+                
+                <div class="account-trigger-buttons">
+                    <button class="account-trigger-btn" onclick="openModal('groom')">신랑측 계좌번호</button>
+                    <button class="account-trigger-btn" onclick="openModal('bride')">신부측 계좌번호</button>
+                </div>
+            </section>
+
+            <section style="border-bottom: none; padding-bottom: 20px;">
+                <a href="#" onclick="alert('링크를 복사하여 카카오톡이나 문자 메시지로 공유해 보세요!'); return false;" class="share-btn">모바일 청첩장 공유하기</a>
+
+                <div class="survey-box">
+                    <h3 class="title-serif" style="font-size:14px; margin-bottom:12px; letter-spacing: 0.05em;">ATTENDANCE</h3>
+                    <p>
+                        식사 준비와 원활한 예식 진행을 위해<br>참석 여부를 미리 알려주시면 감사하겠습니다.
+                    </p>
+                    <button onclick="alert('준비 중인 폼입니다. 구글 폼이나 네이버 폼 링크를 연결해 보세요!')">참석 명단 작성하기</button>
+                </div>
+            </section>
+
+        </div>
     </div>
 
+    <div class="modal-overlay" id="accountModal" onclick="closeModalOnOverlay(event)">
+        <div class="modal-content">
+            <div class="modal-header" id="modalHeader">ACCOUNT NUMBER</div>
+            <div class="modal-body">
+                <span id="modalBank">은행이름</span> 
+                <strong id="modalAccNum">000-000-000000</strong>
+                <span class="acc-holder" id="modalHolder">예금주: 홍길동</span>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeModal()">CLOSE</button>
+                <button class="btn-copy" onclick="copyModalAccount()">COPY</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=80c60a31a6631756bbf915ed70ed3e47"></script>
+
     <script>
+        // 카카오 지도 실행 스크립트
+        window.addEventListener('DOMContentLoaded', function() {
+            // 발급받은 키를 넣지 않았거나 로드가 안 되었을 때의 예외 처리
+            if (typeof kakao === 'undefined' || !kakao.maps) {
+                document.getElementById('daumKakaoMap').innerHTML = 
+                    "<div style='padding:100px 10px; font-size:12px; color:#999;'>카카오맵 API 키 설정이 필요합니다.</div>";
+                return;
+            }
+
+            const mapContainer = document.getElementById('daumKakaoMap'); // 지도를 표시할 div 
+            const mapOption = { 
+                center: new kakao.maps.LatLng(37.279883, 127.039203), // 노블레스웨딩컨벤션 좌표
+                level: 3 // 지도의 확대 레벨
+            };
+
+            const map = new kakao.maps.Map(mapContainer, mapOption); // 지도 생성
+
+            // 마커 위치 지정
+            const markerPosition  = new kakao.maps.LatLng(37.279883, 127.039203); 
+
+            // 마커 생성
+            const marker = new kakao.maps.Marker({
+                position: markerPosition
+            });
+
+            // 마커가 지도 위에 표시되도록 설정
+            marker.setMap(map);
+
+            // 말풍선(인포윈도우)에 표출될 내용 설정
+            const iwContent = '<div style="padding:7px 15px; font-size:12px; text-align:center; font-weight:500; min-width:160px; color:#111;">노블레스웨딩컨벤션</div>';
+            
+            // 인포윈도우 생성
+            const infowindow = new kakao.maps.InfoWindow({
+                content : iwContent
+            });
+            
+            // 마커 위에 인포윈도우 표시
+            infowindow.open(map, marker);
+        });
+
         // D-Day 카운트다운 스크립트
         function getDday() {
             const weddingDate = new Date("2026-10-31T11:00:00").getTime();
             const now = new Date().getTime();
             const distance = weddingDate - now;
 
-            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const d = Math.ceil(distance / (1000 * 60 * 60 * 24));
             
             const element = document.getElementById("dday-count");
             if (d > 0) {
@@ -363,9 +495,48 @@
         getDday();
         setInterval(getDday, 60000);
 
-        // 계좌번호 복사 기능
-        function copyAccount() {
-            const accountText = document.getElementById("acc-num").innerText;
+        // 계좌 데이터 관리 변수
+        const accountData = {
+            groom: {
+                title: "GROOM'S ACCOUNT NUMBER",
+                bank: "우리은행",
+                num: "10024307636729",
+                holder: "백승상"
+            },
+            bride: {
+                title: "BRIDE'S ACCOUNT NUMBER",
+                bank: "국민은행", 
+                num: "12345678901234", 
+                holder: "김효진"
+            }
+        };
+
+        // 팝업 열기 함수
+        function openModal(type) {
+            const data = accountData[type];
+            document.getElementById('modalHeader').innerText = data.title;
+            document.getElementById('modalBank').innerText = data.bank;
+            document.getElementById('modalAccNum').innerText = data.num;
+            document.getElementById('modalHolder').innerText = "예금주: " + data.holder;
+            
+            document.getElementById('accountModal').classList.add('active');
+        }
+
+        // 팝업 닫기 함수
+        function closeModal() {
+            document.getElementById('accountModal').classList.remove('active');
+        }
+
+        // 팝업 바깥쪽 어두운 배경 터치 시 닫기
+        function closeModalOnOverlay(event) {
+            if (event.target === document.getElementById('accountModal')) {
+                closeModal();
+            }
+        }
+
+        // 팝업창 내부 계좌 복사 함수
+        function copyModalAccount() {
+            const accountText = document.getElementById('modalAccNum').innerText;
             navigator.clipboard.writeText(accountText).then(() => {
                 alert("계좌번호가 복사되었습니다: " + accountText);
             }).catch(err => {
