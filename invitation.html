@@ -175,7 +175,7 @@
         .traffic-info p { color: #2b2b2b; }
         .traffic-info strong { color: #111; }
 
-        /* 6. 마음 전하실 곳 (팝업 버튼 디자인) */
+        /* 6. 마음 전하실 곳 */
         .account-trigger-buttons {
             display: flex;
             justify-content: center;
@@ -384,7 +384,7 @@
 
                 <div class="map-navigation-buttons">
                     <a href="https://naver.me/57VZk9UM" target="_blank" class="navi-btn">NAVER MAP</a>
-                    <a href="https://map.kakao.com/link/to/11046123" target="_blank" class="navi-btn">KAKAO MAP</a>
+                    <a href="https://map.kakao.com/link/to/노블레스웨딩컨벤션,37.279815,127.041695" target="_blank" class="navi-btn">KAKAO MAP</a>
                 </div>
 
                 <div class="traffic-info">
@@ -439,13 +439,13 @@
         window.addEventListener('DOMContentLoaded', function() {
             if (typeof kakao === 'undefined' || !kakao.maps) {
                 document.getElementById('daumKakaoMap').innerHTML = 
-                    "<div style='padding:100px 10px; font-size:12px; color:#999;'>카카오맵 API 키 설정이 필요합니다.</div>";
+                    "<div style='padding:100px 10px; font-size:12px; color:#999;'>카카오맵 라이브러리를 로드할 수 없습니다. (플랫폼 도메인 확인 필요)</div>";
                 return;
             }
 
             const mapContainer = document.getElementById('daumKakaoMap'); 
             const mapOption = { 
-                center: new kakao.maps.LatLng(37.279815, 127.041695), // 정확한 예식장 위경도 좌표
+                center: new kakao.maps.LatLng(37.279815, 127.041695), // 정확한 노블레스웨딩컨벤션 실제 위경도 좌표
                 level: 3 
             };
 
