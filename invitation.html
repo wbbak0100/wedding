@@ -170,7 +170,7 @@
         .dday-box span { font-size: 13px; font-weight: 700; color: #111; margin-left: 6px; }
 
         /* 2. 초대글 섹션 */
-        .intro-sec p { font-size: 13px; margin-bottom: 20px; color: #4a4a4a; line-height: 2.1; p}
+        .intro-sec p { font-size: 13px; margin-bottom: 20px; color: #4a4a4a; line-height: 2.1; }
         .family-relation { 
             margin-top: 60px; 
             font-size: 13px; 
@@ -316,7 +316,6 @@
             text-align: center;
         }
 
-        /* 모달 내부 인물 목록 목록 스타일 */
         .account-list-item {
             padding: 12px 0;
             border-bottom: 1px dashed #eaeaea;
@@ -523,58 +522,71 @@
     <div class="modal-overlay" id="accountModal" onclick="closeModalOnOverlay(event)">
         <div class="modal-content">
             <div class="modal-header" id="modalHeader">ACCOUNT NUMBER</div>
-            
             <div id="modalAccountList"></div>
-            
             <div class="modal-footer">
                 <button onclick="closeModal()">닫 기</button>
             </div>
         </div>
     </div>
 
-    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=80c60a31a6631756bbf915ed70ed3e47"></script>
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js" integrity="sha384-lsSknWwDXgOp0GsihBeu7e5K62JptxsfVA18KVGlYNoKMDKilY0ampsoreGsxoWv" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=80c60a31a6631756bbf915ed70ed3e47&autoload=false"></script>
 
     <script>
-        // DOM 로드 완료 후 카카오 SDK 안전하게 초기화 수행
-        window.addEventListener('DOMContentLoaded', function() {
+        // 안전 스크립트 모듈 - 로드 직후 1회 수립
+        (function() {
             if (typeof Kakao !== 'undefined') {
                 try {
                     if (!Kakao.isInitialized()) {
                         Kakao.init('80c60a31a6631756bbf915ed70ed3e47');
+                        Kakao.isInitialized(); // 요청하신 소스 내 초기화 판단 매핑
                     }
                 } catch (e) {
-                    console.error("카카오 초기화 실패:", e);
+                    console.error("카카오 셋업 에러:", e);
                 }
             }
-        });
+        })();
 
-        // 카카오톡 공유
+        // 제공해주신 참고 소스의 데이터 규격 커스텀 반영 모듈
         function shareKakaoTalk(event) {
             event.preventDefault(); 
-            if (typeof Kakao === 'undefined') { alert("카카오 SDK 라이브러리가 정상적으로 로드되지 않았습니다."); return; }
+
+            if (typeof Kakao === 'undefined' || typeof Kakao.Share === 'undefined') {
+                alert("카카오 SDK 라이브러리가 로드되지 않았습니다. 인터넷 상태를 확인해 주세요.");
+                return;
+            }
+
             if (!Kakao.isInitialized()) {
-                alert("카카오 SDK 초기화에 실패했습니다.\n\n[원인 확인]\n1. 로컬 파일(file:///) 환경이 아닌 도메인 주소 형태인지 확인해주세요.\n2. 카카오 개발자 센터 [플랫폼 > Web] 설정에 현재 접속한 도메인 주소가 정확히 추가되었는지 확인이 필요합니다.");
+                alert("카카오 SDK 초기화에 실패했습니다.\n[체크사항]\n카카오 개발자 센터 [플랫폼 > Web]에 현재 접속된 주소(https://...github.io)가 등록되어 있는지 꼭 확인해 주세요.");
                 return;
             }
 
-            const currentUrl = window.location.href;
-            if (currentUrl.startsWith('file://')) {
-                alert("로컬 파일 환경에서는 카카오톡 공유를 테스트할 수 없습니다. 실서버에 업로드한 후 도메인 주소로 접속해 주세요.");
-                return;
-            }
+            // 배포용 호스트의 다이나믹 경로 확보 (main.jpg 자동 세팅 목적)
+            const currentUrl = window.location.href.split('?')[0]; 
+            const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
 
+            // [요청 반영] 보내주신 카카오 피드형 메시지 가이드 폼 정교 매핑
             Kakao.Share.sendDefault({
-                objectType: 'feed',
+                objectType: 'feed', // 이미지 + 텍스트 feed 형식 유지
                 content: {
-                    title: '백승상 & 김효진 결혼합니다 💍',
-                    description: '2026년 10월 31일 토요일 오전 11:00\n수원 노블레스웨딩컨벤션 7층',
-                    imageUrl: currentUrl.substring(0, currentUrl.lastIndexOf('/')) + '/main.jpg',
-                    link: { mobileWebUrl: currentUrl, webUrl: currentUrl },
+                    title: '백승상 🤍 김효진 결혼합니다.', // 커스텀 타이틀 포맷 변환
+                    description: '2026.10.31 토요일 오전 11:00\n수원 노블레스웨딩컨벤션 7층', // 요청 포맷 텍스트 세팅
+                    imageUrl: baseUrl + '/main.jpg', // 실서버의 대표 청첩장 이미지 주소
+                    link: {
+                        mobileWebUrl: currentUrl, // 하객이 디바이스 상관없이 들어올 연결 링크
+                        webUrl: currentUrl,
+                    },
                 },
                 buttons: [
-                    { title: '모바일 청첩장 보기', link: { mobileWebUrl: currentUrl, webUrl: currentUrl } },
+                    {
+                        title: '모바일 청첩장 보기', // 버튼 텍스트 유지
+                        link: {
+                            mobileWebUrl: currentUrl,
+                            webUrl: currentUrl,
+                        },
+                    },
                 ],
+                installTalk: true, // 카카오톡 미설치 시 가이드 경로 이동 활성화 추가
             });
         }
 
@@ -592,35 +604,26 @@
             const audio = document.getElementById('bgm');
             audio.play().catch(e => console.log("자동재생 제약 우회"));
 
+            // 비동기로 카카오 맵 로드 분리 수행
             setTimeout(function() {
-                if (typeof kakao !== 'undefined' && kakao.maps && window.mapInstance) {
-                    window.mapInstance.relayout();
-                    window.mapInstance.setCenter(new kakao.maps.LatLng(37.281555, 127.030294));
+                if (typeof kakao !== 'undefined' && kakao.maps) {
+                    kakao.maps.load(function() {
+                        const mapContainer = document.getElementById('daumKakaoMap'); 
+                        const mapOption = { center: new kakao.maps.LatLng(37.281555, 127.030294), level: 3 };
+
+                        window.mapInstance = new kakao.maps.Map(mapContainer, mapOption); 
+                        const markerPosition  = new kakao.maps.LatLng(37.281555, 127.030294); 
+
+                        const marker = new kakao.maps.Marker({ position: markerPosition });
+                        marker.setMap(window.mapInstance);
+
+                        const iwContent = '<div style="padding:7px 15px; font-size:12px; text-align:center; font-weight:500; min-width:160px; color:#111;">노블레스웨딩컨벤션</div>';
+                        const infowindow = new kakao.maps.InfoWindow({ content : iwContent });
+                        infowindow.open(window.mapInstance, marker);
+                    });
                 }
             }, 300);
         }
-
-        // 카카오 지도 스크립트
-        window.addEventListener('DOMContentLoaded', function() {
-            if (typeof kakao === 'undefined' || !kakao.maps) {
-                document.getElementById('daumKakaoMap').innerHTML = 
-                    "<div style='padding:100px 10px; font-size:12px; color:#999;'>카카오맵 라이브러리를 로드할 수 없습니다.</div>";
-                return;
-            }
-
-            const mapContainer = document.getElementById('daumKakaoMap'); 
-            const mapOption = { center: new kakao.maps.LatLng(37.281555, 127.030294), level: 3 };
-
-            window.mapInstance = new kakao.maps.Map(mapContainer, mapOption); 
-            const markerPosition  = new kakao.maps.LatLng(37.281555, 127.030294); 
-
-            const marker = new kakao.maps.Marker({ position: markerPosition });
-            marker.setMap(window.mapInstance);
-
-            const iwContent = '<div style="padding:7px 15px; font-size:12px; text-align:center; font-weight:500; min-width:160px; color:#111;">노블레스웨딩컨벤션</div>';
-            const infowindow = new kakao.maps.InfoWindow({ content : iwContent });
-            infowindow.open(window.mapInstance, marker);
-        });
 
         // D-Day 카운트다운
         function getDday() {
@@ -662,7 +665,7 @@
             document.getElementById('modalHeader').innerText = group.title;
             
             let htmlContent = '';
-            group.list.forEach((acc, index) => {
+            group.list.forEach((acc) => {
                 htmlContent += `
                     <div class="account-list-item">
                         <div class="account-info-row">
@@ -681,7 +684,6 @@
         function closeModal() { document.getElementById('accountModal').classList.remove('active'); }
         function closeModalOnOverlay(event) { if (event.target === document.getElementById('accountModal')) { closeModal(); } }
 
-        // 개별 복사 기능
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => {
                 alert("계좌번호가 복사되었습니다:\n" + text);
