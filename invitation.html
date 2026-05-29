@@ -530,67 +530,52 @@
     </div>
 
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js" integrity="sha384-lsSknWwDXgOp0GsihBeu7e5K62JptxsfVA18KVGlYNoKMDKilY0ampsoreGsxoWv" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=80c60a31a6631756bbf915ed70ed3e47&autoload=false"></script>
 
     <script>
-        // 전역 스크립트 로드 즉시 일회성 안전 초기화 자동 실행 (중복 실행 크래시 원천 방지)
+        // 전역 네임스페이스 격리 상태에서 안전 초기화 즉시 강제 수립
         (function() {
-            if (typeof Kakao !== 'undefined') {
-                try {
-                    if (!Kakao.isInitialized()) {
-                        Kakao.init('80c60a31a6631756bbf915ed70ed3e47');
-                        Kakao.isInitialized(); 
-                    }
-                } catch (e) {
-                    console.error("카카오 초기화 예외 보호:", e);
+            try {
+                if (typeof Kakao !== 'undefined') {
+                    Kakao.init('80c60a31a6631756bbf915ed70ed3e47');
                 }
+            } catch (e) {
+                console.error("카카오 쉐어 코어 엔진 강제 예외 처리:", e);
             }
         })();
 
-        // 최적화 빌드된 완벽한 카카오톡 피드 메세지 전송 모듈
+        // 공유 기능 핵심 엔진 (지도 스크립트가 덮어씌우는 현상을 원천 방어하도록 설계)
         function shareKakaoTalk(event) {
             event.preventDefault(); 
 
             if (typeof Kakao === 'undefined' || typeof Kakao.Share === 'undefined') {
-                alert("카카오 SDK 라이브러리가 로드되지 않았습니다.\n\n[확인 사항]\nPC 컴퓨터에서 index.html 파일 그대로 더블 클릭하여 실행할 경우 카카오 보안 정책상 실행이 불가합니다. GitHub Pages 주소로 접속해 주세요.");
+                alert("카카오톡 공유 모듈을 불러오는 중입니다. 1~2초 후 다시 눌러주세요!\n\n※ 만약 PC에서 파일을 직접 더블 클릭해 열었다면 보안상 실행되지 않으므로, 깃허브 실서버 링크로 접속하셔야 합니다.");
                 return;
             }
 
             if (!Kakao.isInitialized()) {
-                alert("카카오 SDK 초기화에 실패했습니다.\n\n[해결 방법]\n카카오 개발자 센터 [내 애플리케이션 > 앱 설정 > 플랫폼 > Web] 메뉴에 현재 GitHub Pages 주소(https://본인아이디.github.io)가 올바르게 추가 등록되어 있는지 확인해 주세요.");
+                alert("카카오 설정 매칭 오류입니다.\n\n카카오 개발자 센터 [Web 플랫폼] 메뉴에 현재 주소 전체가 등록되어 있는지 다시 확인해 주세요.\n현재 주소: https://wbbak0100.github.io/wedding");
                 return;
             }
 
-            // 호스팅 서버 주소 및 서브 파일 디렉토리 자동 동적 추출 (하드코딩 제거)
             const currentUrl = window.location.href.split('?')[0]; 
             const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
 
-            // 카카오 공식 피드 포맷 가이드 규격 정밀 설계
             Kakao.Share.sendDefault({
                 objectType: 'feed', 
                 content: {
                     title: '백승상 🤍 김효진 결혼합니다.', 
                     description: '2026.10.31 토요일 오전 11:00\n수원 노블레스웨딩컨벤션 7층 컨벤션홀', 
                     imageUrl: baseUrl + '/main.jpg', 
-                    link: {
-                        mobileWebUrl: currentUrl, 
-                        webUrl: currentUrl,
-                    },
+                    link: { mobileWebUrl: currentUrl, webUrl: currentUrl },
                 },
                 buttons: [
-                    {
-                        title: '모바일 청첩장 보기', 
-                        link: {
-                            mobileWebUrl: currentUrl,
-                            webUrl: currentUrl,
-                        },
-                    },
+                    { title: '모바일 청첩장 보기', link: { mobileWebUrl: currentUrl, webUrl: currentUrl } },
                 ],
-                installTalk: true, // 카카오톡 미설치 하객 유입을 위한 설치 가이드 활성화 옵션 탑재
+                installTalk: true, 
             });
         }
 
-        // 인트로 커버 제어 및 지도 동적 바인딩 함수
+        // 인트로 커버 제어 및 지도 동적 스크립트 인젝션 엔진 (완벽한 충돌 분리 기술)
         function openInvitation() {
             const intro = document.getElementById('intro-cover');
             intro.classList.add('hide');
@@ -604,25 +589,35 @@
             const audio = document.getElementById('bgm');
             audio.play().catch(e => console.log("자동재생 제약 우회"));
 
-            // 카카오 지도 스크립트 충돌 제어를 위해 가상 돔 생성 시점에 독립 비동기 로딩 처리
+            // 카카오 지도 스크립트를 공유하기 초기화와 시간차를 두고 동적으로 인젝션하여 간섭 원천 배제
             setTimeout(function() {
-                if (typeof kakao !== 'undefined' && kakao.maps) {
-                    kakao.maps.load(function() {
-                        const mapContainer = document.getElementById('daumKakaoMap'); 
-                        const mapOption = { center: new kakao.maps.LatLng(37.281555, 127.030294), level: 3 };
+                if (typeof window.mapInstance === 'undefined') {
+                    const mapScript = document.createElement('script');
+                    mapScript.type = 'text/javascript';
+                    // 지도 로딩 도중 autoload 방지 처리
+                    mapScript.src = 'https://dapi.kakao.com/v2/maps/sdk.js?appkey=80c60a31a6631756bbf915ed70ed3e47&autoload=false';
+                    
+                    mapScript.onload = function() {
+                        if (typeof kakao !== 'undefined' && kakao.maps) {
+                            kakao.maps.load(function() {
+                                const mapContainer = document.getElementById('daumKakaoMap'); 
+                                const mapOption = { center: new kakao.maps.LatLng(37.281555, 127.030294), level: 3 };
 
-                        window.mapInstance = new kakao.maps.Map(mapContainer, mapOption); 
-                        const markerPosition  = new kakao.maps.LatLng(37.281555, 127.030294); 
+                                window.mapInstance = new kakao.maps.Map(mapContainer, mapOption); 
+                                const markerPosition  = new kakao.maps.LatLng(37.281555, 127.030294); 
 
-                        const marker = new kakao.maps.Marker({ position: markerPosition });
-                        marker.setMap(window.mapInstance);
+                                const marker = new kakao.maps.Marker({ position: markerPosition });
+                                marker.setMap(window.mapInstance);
 
-                        const iwContent = '<div style="padding:7px 15px; font-size:12px; text-align:center; font-weight:500; min-width:160px; color:#111;">노블레스웨딩컨벤션</div>';
-                        const infowindow = new kakao.maps.InfoWindow({ content : iwContent });
-                        infowindow.open(window.mapInstance, marker);
-                    });
+                                const iwContent = '<div style="padding:7px 15px; font-size:12px; text-align:center; font-weight:500; min-width:160px; color:#111;">노블레스웨딩컨벤션</div>';
+                                const infowindow = new kakao.maps.InfoWindow({ content : iwContent });
+                                infowindow.open(window.mapInstance, marker);
+                            });
+                        }
+                    };
+                    document.head.appendChild(mapScript);
                 }
-            }, 300);
+            }, 400);
         }
 
         // D-Day 카운트다운 엔진
@@ -684,7 +679,6 @@
         function closeModal() { document.getElementById('accountModal').classList.remove('active'); }
         function closeModalOnOverlay(event) { if (event.target === document.getElementById('accountModal')) { closeModal(); } }
 
-        // 클립보드 문자열 주입 함수
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => {
                 alert("계좌번호가 복사되었습니다:\n" + text);
