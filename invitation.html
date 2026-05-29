@@ -533,64 +533,64 @@
     <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=80c60a31a6631756bbf915ed70ed3e47&autoload=false"></script>
 
     <script>
-        // 안전 스크립트 모듈 - 로드 직후 1회 수립
+        // 전역 스크립트 로드 즉시 일회성 안전 초기화 자동 실행 (중복 실행 크래시 원천 방지)
         (function() {
             if (typeof Kakao !== 'undefined') {
                 try {
                     if (!Kakao.isInitialized()) {
                         Kakao.init('80c60a31a6631756bbf915ed70ed3e47');
-                        Kakao.isInitialized(); // 요청하신 소스 내 초기화 판단 매핑
+                        Kakao.isInitialized(); 
                     }
                 } catch (e) {
-                    console.error("카카오 셋업 에러:", e);
+                    console.error("카카오 초기화 예외 보호:", e);
                 }
             }
         })();
 
-        // 제공해주신 참고 소스의 데이터 규격 커스텀 반영 모듈
+        // 최적화 빌드된 완벽한 카카오톡 피드 메세지 전송 모듈
         function shareKakaoTalk(event) {
             event.preventDefault(); 
 
             if (typeof Kakao === 'undefined' || typeof Kakao.Share === 'undefined') {
-                alert("카카오 SDK 라이브러리가 로드되지 않았습니다. 인터넷 상태를 확인해 주세요.");
+                alert("카카오 SDK 라이브러리가 로드되지 않았습니다.\n\n[확인 사항]\nPC 컴퓨터에서 index.html 파일 그대로 더블 클릭하여 실행할 경우 카카오 보안 정책상 실행이 불가합니다. GitHub Pages 주소로 접속해 주세요.");
                 return;
             }
 
             if (!Kakao.isInitialized()) {
-                alert("카카오 SDK 초기화에 실패했습니다.\n[체크사항]\n카카오 개발자 센터 [플랫폼 > Web]에 현재 접속된 주소(https://...github.io)가 등록되어 있는지 꼭 확인해 주세요.");
+                alert("카카오 SDK 초기화에 실패했습니다.\n\n[해결 방법]\n카카오 개발자 센터 [내 애플리케이션 > 앱 설정 > 플랫폼 > Web] 메뉴에 현재 GitHub Pages 주소(https://본인아이디.github.io)가 올바르게 추가 등록되어 있는지 확인해 주세요.");
                 return;
             }
 
-            // 배포용 호스트의 다이나믹 경로 확보 (main.jpg 자동 세팅 목적)
+            // 호스팅 서버 주소 및 서브 파일 디렉토리 자동 동적 추출 (하드코딩 제거)
             const currentUrl = window.location.href.split('?')[0]; 
             const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
 
-            // [요청 반영] 보내주신 카카오 피드형 메시지 가이드 폼 정교 매핑
+            // 카카오 공식 피드 포맷 가이드 규격 정밀 설계
             Kakao.Share.sendDefault({
-                objectType: 'feed', // 이미지 + 텍스트 feed 형식 유지
+                objectType: 'feed', 
                 content: {
-                    title: '백승상 🤍 김효진 결혼합니다.', // 커스텀 타이틀 포맷 변환
-                    description: '2026.10.31 토요일 오전 11:00\n수원 노블레스웨딩컨벤션 7층', // 요청 포맷 텍스트 세팅
-                    imageUrl: baseUrl + '/main.jpg', // 실서버의 대표 청첩장 이미지 주소
+                    title: '백승상 🤍 김효진 결혼합니다.', 
+                    description: '2026.10.31 토요일 오전 11:00\n수원 노블레스웨딩컨벤션 7층 컨벤션홀', 
+                    imageUrl: baseUrl + '/main.jpg', 
                     link: {
-                        mobileWebUrl: currentUrl, // 하객이 디바이스 상관없이 들어올 연결 링크
+                        mobileWebUrl: currentUrl, 
                         webUrl: currentUrl,
                     },
                 },
                 buttons: [
                     {
-                        title: '모바일 청첩장 보기', // 버튼 텍스트 유지
+                        title: '모바일 청첩장 보기', 
                         link: {
                             mobileWebUrl: currentUrl,
                             webUrl: currentUrl,
                         },
                     },
                 ],
-                installTalk: true, // 카카오톡 미설치 시 가이드 경로 이동 활성화 추가
+                installTalk: true, // 카카오톡 미설치 하객 유입을 위한 설치 가이드 활성화 옵션 탑재
             });
         }
 
-        // 인트로 열기 함수
+        // 인트로 커버 제어 및 지도 동적 바인딩 함수
         function openInvitation() {
             const intro = document.getElementById('intro-cover');
             intro.classList.add('hide');
@@ -604,7 +604,7 @@
             const audio = document.getElementById('bgm');
             audio.play().catch(e => console.log("자동재생 제약 우회"));
 
-            // 비동기로 카카오 맵 로드 분리 수행
+            // 카카오 지도 스크립트 충돌 제어를 위해 가상 돔 생성 시점에 독립 비동기 로딩 처리
             setTimeout(function() {
                 if (typeof kakao !== 'undefined' && kakao.maps) {
                     kakao.maps.load(function() {
@@ -625,7 +625,7 @@
             }, 300);
         }
 
-        // D-Day 카운트다운
+        // D-Day 카운트다운 엔진
         function getDday() {
             const weddingDate = new Date("2026-10-31T11:00:00").getTime();
             const now = new Date().getTime();
@@ -639,7 +639,7 @@
         getDday();
         setInterval(getDday, 60000);
 
-        // 양가 부모님 및 당사자 임시 계좌 데이터 집합
+        // 양가 혼주 전용 고정 데이터셋
         const familyAccounts = {
             groom: {
                 title: "신랑측 마음 전하실 곳",
@@ -659,7 +659,7 @@
             }
         };
 
-        // 모달창 오픈 및 동적 컨텐츠 빌드 함수
+        // 모달창 제어 및 동적 리스트 렌더러
         function openModal(side) {
             const group = familyAccounts[side];
             document.getElementById('modalHeader').innerText = group.title;
@@ -684,13 +684,14 @@
         function closeModal() { document.getElementById('accountModal').classList.remove('active'); }
         function closeModalOnOverlay(event) { if (event.target === document.getElementById('accountModal')) { closeModal(); } }
 
+        // 클립보드 문자열 주입 함수
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => {
                 alert("계좌번호가 복사되었습니다:\n" + text);
             }).catch(err => { alert("복사에 실패했습니다."); });
         }
 
-        // BGM 스크립트
+        // 오디오 토글러
         const audio = document.getElementById('bgm');
         const bgmBtn = document.getElementById('bgmBtn');
         function toggleBgm() {
