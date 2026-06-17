@@ -16,8 +16,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Canela 느낌의 고급스러운 세리프 폰트 Playfair Display 추가 -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ephesis&family=Playfair+Display:wght@500;600&family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <style>
         /* 기본 스타일 */
@@ -28,18 +27,16 @@
             line-height: 1.8; letter-spacing: -0.02em; overflow-x: hidden;
         }
 
-        /* PC에서도 모바일 본문 크기(max-width: 450px)에 맞춰 중앙에만 꽉 차도록 수정 */
         #intro-cover {
             position: fixed; top: 0; left: 50%; transform: translateX(-50%);
             width: 100%; max-width: 450px; height: 100vh;
             background-color: #ffffff; z-index: 5000;
-            display: flex; flex-direction: column; align-items: center; /* justify-content 제거하여 상단 배치 용이하게 함 */
+            display: flex; flex-direction: column; align-items: center; 
             cursor: pointer; transition: opacity 0.8s ease, transform 0.8s ease;
             box-shadow: 0 0 30px rgba(0,0,0,0.05);
         }
         #intro-cover.hide { opacity: 0; transform: translate(-50%, -30px); pointer-events: none; }
         
-        /* 썸네일 이미지를 인트로 규격 내에서 가득 채우기 */
         .intro-img-wrapper { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100vh; 
             overflow: hidden; z-index: 1; 
@@ -48,7 +45,6 @@
             width: 100%; height: 100%; object-fit: cover; 
         }
         
-        /* 사진 위 글씨가 찰떡같이 돋보이도록 해주는 은은한 감성 음영 틴트 */
         .intro-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
             background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.4) 100%);
@@ -56,52 +52,69 @@
         }
 
         /* -------------------------------------
-           상단 배치 및 세 줄 텍스트 애니메이션 설정
+           벚꽃잎 흩날리는 애니메이션 설정
+           ------------------------------------- */
+        #cherry-blossom-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; pointer-events: none; 
+            z-index: 2; 
+        }
+        
+        .petal {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255, 245, 247, 0.85));
+            border-radius: 15px 0px 15px 15px; 
+            filter: blur(1.5px); 
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            top: -10%;
+            animation: fall linear infinite, sway ease-in-out infinite alternate;
+        }
+
+        @keyframes fall {
+            0% { top: -10%; margin-left: 0; opacity: 0; }
+            10% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { top: 110%; margin-left: 400px; opacity: 0; } 
+        }
+
+        @keyframes sway {
+            0% { transform: translateX(-35px) rotate(-20deg); }
+            100% { transform: translateX(35px) rotate(60deg); }
+        }
+
+        /* -------------------------------------
+           손글씨 드로잉 애니메이션 (Ephesis 폰트 적용)
            ------------------------------------- */
         .intro-content {
             position: relative; 
             z-index: 3; 
             text-align: center; 
             width: 100%;
-            margin-top: 12vh; /* 화면 상단에서 12% 내려온 위치에 배치 */
+            margin-top: 13vh; 
         }
         
-        /* SVG 크기 조절: 세 줄이 들어가도록 높이를 키움 */
-        .signature-svg {
-            width: 100%; 
-            max-width: 380px; 
-            height: 250px; 
-        }
+        .signature-svg { width: 100%; max-width: 380px; height: 300px; }
 
         .signature-text {
-            font-family: 'Playfair Display', serif; /* Canela 느낌의 세리프 폰트 */
-            font-style: italic; /* 약간 기울임꼴 적용으로 우아함 강조 */
-            font-size: 55px; /* 글씨 크기 조정 */
-            fill: transparent; /* 처음엔 색상이 없음 */
-            stroke: #ffffff; /* 테두리 선 색상 */
-            stroke-width: 1px;
-            stroke-dasharray: 800;
-            stroke-dashoffset: 800;
-            /* 1. 선을 그리는 애니메이션 2. 색상을 채우는 애니메이션 */
+            font-family: 'Ephesis', cursive; 
+            font-size: 85px; 
+            fill: transparent; 
+            stroke: #ffffff; 
+            stroke-width: 1px; 
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
             animation: drawStroke 3s cubic-bezier(0.4, 0, 0.2, 1) forwards, 
-                       fillColor 1.5s ease 2s forwards;
+                       fillColor 2s ease 2.5s forwards;
         }
 
-        /* 각 줄마다 그려지는 타이밍을 약간씩 다르게 주어 자연스럽게 연출 */
-        .line1 { animation-delay: 0s, 2s; }
-        .line2 { animation-delay: 0.5s, 2.5s; }
-        .line3 { animation-delay: 1s, 3s; }
+        .line1 { animation-delay: 0.2s, 2.2s; }
+        .line2 { animation-delay: 1.0s, 3.0s; }
+        .line3 { animation-delay: 1.8s, 3.8s; }
 
-        @keyframes drawStroke {
-            0% { stroke-dashoffset: 800; }
-            100% { stroke-dashoffset: 0; }
-        }
-
-        @keyframes fillColor {
-            0% { fill: transparent; text-shadow: none; }
-            100% { fill: #ffffff; text-shadow: 0 2px 15px rgba(0,0,0,0.5); }
-        }
-        /* ------------------------------------- */
+        @keyframes drawStroke { 0% { stroke-dashoffset: 1000; } 100% { stroke-dashoffset: 0; } }
+        @keyframes fillColor { 0% { fill: transparent; text-shadow: none; } 100% { fill: #ffffff; text-shadow: 0 2px 15px rgba(0,0,0,0.5); } }
 
         .intro-guide { 
             position: absolute; bottom: 8vh; left: 50%; transform: translateX(-50%);
@@ -117,7 +130,6 @@
         .wrapper.show { opacity: 1; }
         .container { width: 100%; max-width: 450px; background-color: #ffffff; text-align: center; padding-bottom: 60px; box-shadow: 0 0 20px rgba(0,0,0,0.02); }
         
-        /* 스크롤 섹션 트랜지션 (위아래 반복 애니메이션) */
         section { 
             padding: 70px 24px; 
             border-bottom: 1px solid #eaeaea; 
@@ -125,19 +137,37 @@
             transform: translateY(40px);
             transition: opacity 1s cubic-bezier(0.25, 0.8, 0.25, 1), transform 1s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
-        section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        section.is-visible { opacity: 1; transform: translateY(0); }
         
         .title-serif { font-family: 'Nanum Myeongjo', serif; color: #1a1a1a; font-weight: 400; }
 
-        /* 배경음악 */
         .bgm-container { position: fixed; top: 20px; right: 20px; z-index: 1000; background: rgba(255,255,255,0.8); backdrop-filter: blur(5px); padding: 5px 12px; font-size: 10px; border: 1px solid #dbdbdb; display: none; }
 
-        /* 메인 섹션 */
         .main-sec { padding-top: 90px; }
         .main-img { width: 100%; max-height: 500px; object-fit: cover; margin-bottom: 40px; }
+
+        /* 달력 및 타이머 섹션 스타일 */
+        .calendar-wrap { margin: 20px 0 40px; }
+        .cal-month { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 25px; letter-spacing: 0.05em; color: #d68798; font-style: italic; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px 0; font-size: 13px; color: #555; }
+        .cal-day-header { font-weight: 500; color: #aaa; font-size: 11px; margin-bottom: 10px; }
+        .cal-day-header.sunday, .cal-day.sunday { color: #e57373; }
+        .cal-day { display: flex; justify-content: center; align-items: center; position: relative; height: 30px; }
+        
+        .cal-day.highlight { 
+            background: #d68798; color: #ffffff; 
+            border-radius: 50%; font-weight: 600; 
+            width: 30px; height: 30px; margin: 0 auto;
+            box-shadow: 0 3px 10px rgba(214, 135, 152, 0.3);
+        }
+
+        .timer-wrap { display: flex; justify-content: center; gap: 15px; margin-top: 25px; }
+        .timer-box { 
+            background: #fff; border: 1px solid #f0f0f0; border-radius: 8px; 
+            width: 65px; padding: 12px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
+        }
+        .timer-num { font-size: 22px; font-family: 'Playfair Display', serif; font-weight: 600; color: #333; line-height: 1; margin-bottom: 5px; }
+        .timer-label { font-size: 10px; color: #999; letter-spacing: 0.5px; }
 
         /* 갤러리 섹션 스타일 */
         .gallery-wrapper-relative { position: relative; width: 100%; margin-top: 25px; }
@@ -146,16 +176,8 @@
             scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
         }
         .gallery-slider-container::-webkit-scrollbar { display: none; }
-        
         .gallery-page-block { flex: 0 0 100%; width: 100%; scroll-snap-align: start; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-        
-        .gallery-page-block img { 
-            width: 100%; 
-            height: auto; 
-            aspect-ratio: 3 / 4; 
-            object-fit: cover; 
-            cursor: pointer; 
-        }
+        .gallery-page-block img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; cursor: pointer; }
 
         .gallery-nav-btn {
             position: absolute; top: 50%; transform: translateY(-50%);
@@ -170,7 +192,7 @@
         .dot { width: 6px; height: 6px; background-color: #eee; border-radius: 50%; transition: 0.3s; }
         .dot.active { background-color: #111; transform: scale(1.2); }
 
-        /* 스마트 팝업 라이트박스 시스템 */
+        /* 사진 확대 팝업 시스템 */
         .photo-popup-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.95); z-index: 7000;
@@ -202,60 +224,63 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
 
-        /* 오시는 길 지도 및 교통 정보 */
-        .map-container { width: 100%; height: 280px; margin: 30px 0 15px; border: 1px solid #eaeaea; background: #fafafa; }
-        .map-navigation-buttons { display: flex; gap: 1px; background: #eaeaea; padding: 1px 0; margin-bottom: 25px; }
-        .navi-btn { flex: 1; padding: 13px; background: #fff; text-decoration: none; font-size: 12px; color: #555; }
-        
-        .traffic-guide-img { width: 100%; height: auto; object-fit: contain; margin-top: 15px; border: 1px solid #eaeaea; }
-
-        .traffic-info {
-            text-align: left; margin-top: 25px; font-size: 12px; line-height: 2.0; color: #2b2b2b; border-top: 1px dashed #eaeaea; padding-top: 25px;
-        }
-        .traffic-info p { color: #2b2b2b; }
-        .traffic-info strong { color: #111; }
-
-        /* 계좌번호 모달 */
+        /* 모달 및 교통 정보 레이아웃 스타일 */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4); backdrop-filter: blur(3px); z-index: 6000;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); z-index: 6000;
             display: none; justify-content: center; align-items: center;
         }
-        .modal-content { background: #fff; width: 85%; max-width: 360px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .modal-content { 
+            background: #fff; width: 85%; max-width: 380px; padding: 24px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 5px; 
+            max-height: 85vh; overflow-y: auto; position: relative;
+        }
+        .modal-content::-webkit-scrollbar { width: 4px; }
+        .modal-content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        
         .account-list-item { padding: 15px 0; border-bottom: 1px dashed #eee; text-align: left; }
         .btn-copy-mini { padding: 4px 10px; font-size: 11px; background: #111; color: #fff; border: none; cursor: pointer; float: right; }
         
-        /* 버튼 시스템 디자인 */
-        .account-trigger-btn { flex: 1; padding: 14px; font-size: 12px; background: #fff; border: 1px solid #111; cursor: pointer; }
+        .account-trigger-btn { flex: 1; padding: 14px; font-size: 13px; background: #fff; border: 1px solid #111; cursor: pointer; color: #111; }
         .share-btn { display: block; background: #fee500; color: #181600; padding: 15px; text-decoration: none; font-size: 13px; margin: 20px 0 8px 0; font-weight: 500; }
         .url-copy-btn { display: block; background: #222222; color: #ffffff; padding: 14px; text-decoration: none; font-size: 12px; font-weight: 400; border: none; width: 100%; cursor: pointer; letter-spacing: 0.05em; transition: background 0.2s ease; }
         .url-copy-btn:hover { background: #111111; }
+
+        /* 메인화면 지도 및 네비 버튼 */
+        .map-container { width: 100%; height: 280px; margin: 30px 0 15px; border: 1px solid #eaeaea; background: #fafafa; }
+        .map-navigation-buttons { display: flex; gap: 8px; margin-top: 15px; }
+        .navi-btn { flex: 1; padding: 13px; background: #fafafa; border: 1px solid #eaeaea; border-radius: 4px; text-decoration: none; font-size: 12px; color: #555; text-align: center; }
+        
+        /* 팝업 내부 교통 상세 텍스트 디자인 */
+        .traffic-info { text-align: left; font-size: 12px; line-height: 1.8; color: #4a4a4a; }
+        .modal-content .traffic-info { border-top: none; padding-top: 0; margin-top: 0; }
+        .traffic-title { font-size: 14px; color: #111; font-weight: 600; margin: 25px 0 10px; display: flex; align-items: center; gap: 5px; }
+        .traffic-title:first-child { margin-top: 0; }
+        .traffic-list { list-style: none; padding: 0; margin: 0; }
+        .traffic-list li { margin-bottom: 12px; position: relative; padding-left: 12px; }
+        .traffic-list li::before { content: '•'; position: absolute; left: 0; color: #d68798; font-weight: bold; }
+        .traffic-highlight { color: #111; font-weight: 600; }
+
+        /* 메인화면 하단 요약 정보 */
+        .summary-traffic { text-align: left; margin: 25px 0 20px; font-size: 12px; line-height: 1.8; color: #333; }
+        .summary-traffic p { margin-bottom: 10px; }
+        .summary-traffic strong { color: #111; }
     </style>
 </head>
 <body>
 
-    <!-- PC/모바일 상관없이 450px 규격 내에서 꽉 차는 인트로 -->
     <div id="intro-cover" onclick="openInvitation()">
         <div class="intro-img-wrapper">
             <img src="img/Thumbnail.jpg" class="intro-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=1000';">
             <div class="intro-overlay"></div>
+            <div id="cherry-blossom-container"></div>
         </div>
         
         <div class="intro-content">
-            <!-- 세 줄로 나뉘어 순차적으로 획이 그어지는 SVG 애니메이션 -->
-            <svg class="signature-svg" viewBox="0 0 400 250">
-                <!-- Save -->
-                <text x="50%" y="40" text-anchor="middle" dominant-baseline="middle" class="signature-text line1">
-                    Save
-                </text>
-                <!-- The -->
-                <text x="50%" y="120" text-anchor="middle" dominant-baseline="middle" class="signature-text line2">
-                    The
-                </text>
-                <!-- Date -->
-                <text x="50%" y="200" text-anchor="middle" dominant-baseline="middle" class="signature-text line3">
-                    Date
-                </text>
+            <svg class="signature-svg" viewBox="0 0 400 300">
+                <text x="50%" y="60" text-anchor="middle" dominant-baseline="middle" class="signature-text line1">Save</text>
+                <text x="50%" y="150" text-anchor="middle" dominant-baseline="middle" class="signature-text line2">The</text>
+                <text x="50%" y="240" text-anchor="middle" dominant-baseline="middle" class="signature-text line3">Date</text>
             </svg>
         </div>
         
@@ -289,6 +314,68 @@
                 <div style="margin-top:50px; font-size:13px; border-top:1px solid #f0f0f0; padding-top:40px;">
                     <div>신랑 아버지 <strong>백광현</strong> · 어머니 <strong>심지나</strong> 의 장남 <strong>승상</strong></div>
                     <div>신부 아버지 <strong>김재중</strong> · 어머니 <strong>오선영</strong> 의 장녀 <strong>효진</strong></div>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="title-serif" style="margin-bottom:10px; font-size:16px; color:#777;">SAVE THE DATE</h2>
+                
+                <div class="calendar-wrap">
+                    <div class="cal-month">October 2026</div>
+                    <div class="cal-grid">
+                        <div class="cal-day-header sunday">S</div>
+                        <div class="cal-day-header">M</div>
+                        <div class="cal-day-header">T</div>
+                        <div class="cal-day-header">W</div>
+                        <div class="cal-day-header">T</div>
+                        <div class="cal-day-header">F</div>
+                        <div class="cal-day-header">S</div>
+                        
+                        <div></div><div></div><div></div><div></div>
+                        <div class="cal-day">1</div>
+                        <div class="cal-day">2</div>
+                        <div class="cal-day">3</div>
+                        
+                        <div class="cal-day sunday">4</div>
+                        <div class="cal-day">5</div>
+                        <div class="cal-day">6</div>
+                        <div class="cal-day">7</div>
+                        <div class="cal-day">8</div>
+                        <div class="cal-day">9</div>
+                        <div class="cal-day">10</div>
+                        
+                        <div class="cal-day sunday">11</div>
+                        <div class="cal-day">12</div>
+                        <div class="cal-day">13</div>
+                        <div class="cal-day">14</div>
+                        <div class="cal-day">15</div>
+                        <div class="cal-day">16</div>
+                        <div class="cal-day">17</div>
+                        
+                        <div class="cal-day sunday">18</div>
+                        <div class="cal-day">19</div>
+                        <div class="cal-day">20</div>
+                        <div class="cal-day">21</div>
+                        <div class="cal-day">22</div>
+                        <div class="cal-day">23</div>
+                        <div class="cal-day">24</div>
+                        
+                        <div class="cal-day sunday">25</div>
+                        <div class="cal-day">26</div>
+                        <div class="cal-day">27</div>
+                        <div class="cal-day">28</div>
+                        <div class="cal-day">29</div>
+                        <div class="cal-day">30</div>
+                        <div class="cal-day highlight">31</div>
+                    </div>
+                </div>
+
+                <p style="font-size:12px; color:#888; margin-top:25px; letter-spacing:0.05em;">승상과 효진의 예식까지 남은 시간</p>
+                <div class="timer-wrap">
+                    <div class="timer-box"><div class="timer-num" id="t-days">00</div><div class="timer-label">DAYS</div></div>
+                    <div class="timer-box"><div class="timer-num" id="t-hours">00</div><div class="timer-label">HOURS</div></div>
+                    <div class="timer-box"><div class="timer-num" id="t-minutes">00</div><div class="timer-label">MINS</div></div>
+                    <div class="timer-box"><div class="timer-num" id="t-seconds">00</div><div class="timer-label">SECS</div></div>
                 </div>
             </section>
 
@@ -339,6 +426,7 @@
                 </div>
             </section>
 
+            <!-- 메인화면 요약 교통 정보 및 카카오맵 -->
             <section>
                 <h2 class="title-serif" style="font-size:16px; margin-bottom:25px; color:#777;">LOCATION</h2>
                 <p style="font-size:15px; color:#111;">노블레스웨딩컨벤션 7층 컨벤션홀</p>
@@ -351,12 +439,14 @@
                     <a href="https://map.kakao.com/link/to/노블레스웨딩컨벤션,37.281555,127.030294" target="_blank" class="navi-btn">KAKAO MAP</a>
                 </div>
 
-                <img src="img/traffic.jpg" class="traffic-guide-img" onerror="this.style.display='none';" alt="교통 및 주차 안내 약도">
-
-                <div class="traffic-info">
+                <!-- 🌟 요약 정보 복구 🌟 -->
+                <div class="summary-traffic">
                     <p><strong>🚘 주차 안내 —</strong> 건물 내 지하주차장 및 외부 제2주차장 무료 이용 가능 (2시간 제공)</p>
-                    <p style="margin-top: 10px;"><strong>🚌 셔틀 및 대중교통 —</strong> 수원역 4번 출구에서 셔틀버스 상시 운행 / 팔달문역 하차 후 도보 5분</p>
+                    <p><strong>🚌 셔틀 및 대중교통 —</strong> 수원역 4번 출구에서 셔틀버스 상시 운행 / 팔달문역 하차 후 도보 5분</p>
                 </div>
+
+                <!-- 팝업 열기 버튼 -->
+                <button class="account-trigger-btn" style="width:100%; border-radius: 4px;" onclick="openMapModal()">📍 상세 대중교통 및 약도 안내 보기</button>
             </section>
 
             <section>
@@ -374,15 +464,53 @@
         </div>
     </div>
 
+    <!-- 계좌번호 팝업 모달 -->
     <div class="modal-overlay" id="accountModal" onclick="closeAccModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <h3 id="modalTitle" style="font-size:14px; margin-bottom:20px;"></h3>
+            <h3 id="modalTitle" style="font-size:14px; margin-bottom:20px; text-align:center;"></h3>
             <div id="modalAccountList"></div>
-            <button onclick="closeAccModal()" style="width:100%; padding:12px; margin-top:20px; background:#f7f7f7; border:none;">닫기</button>
+            <button onclick="closeAccModal()" style="width:100%; padding:12px; margin-top:20px; background:#f7f7f7; border:none; cursor:pointer;">닫기</button>
         </div>
     </div>
 
-    <!-- 전체화면 팝업 시스템 -->
+    <!-- 🌟 교통 상세 텍스트 & traffic.jpg 사진 팝업 모달 -->
+    <div class="modal-overlay" id="mapModal" onclick="closeMapModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button style="position:absolute; top:-40px; right:0; background:none; border:none; color:#fff; font-size:30px; cursor:pointer;" onclick="closeMapModal()">✕</button>
+            
+            <h3 style="font-size:16px; margin-bottom:15px; text-align:center; font-weight:600;">상세 교통 안내</h3>
+            
+            <img src="img/traffic.jpg" style="width: 100%; height: auto; display: block; border-radius: 4px; margin-bottom: 20px;" onerror="this.style.display='none';" alt="약도 및 주차 안내">
+            
+            <div class="traffic-info">
+                <div class="traffic-title">📍 주소 및 전화번호</div>
+                <p style="padding-left:12px;">경기도 수원시 팔달구 팔달문로 128 (우만동 549)<br>☎ 031-215-7000</p>
+
+                <div class="traffic-title">🚌 버스 이용 안내</div>
+                <ul class="traffic-list">
+                    <li><span class="traffic-highlight">수원역(4번 출구) → 동수원병원 하차</span><br>10, 11-1, 37, 720-2, 83-1 (약 20분)</li>
+                    <li><span class="traffic-highlight">수원종합버스터미널 → 수병원 하차</span><br>300, 300-1, 82-1, 80, 88 (약 20분)</li>
+                    <li><span class="traffic-highlight">서수원시외버스터미널 → 동수원병원 하차</span><br>11-1, 37, 61, 62-1 (약 30분)</li>
+                    <li><span class="traffic-highlight">망포역(4번 출구) → 동수원병원 하차</span><br>62-1, 61 (약 30분)</li>
+                    <li><span class="traffic-highlight">용인(용인터미널/경기장) → 동수원병원 하차</span><br>10, 10-5, 66 (약 1시간)</li>
+                    <li><span class="traffic-highlight">범계역/오산역 → 수병원 하차</span><br>300 (약 50분)</li>
+                    <li><span class="traffic-highlight">잠실역(4번 출구) → 월드컵경기장 하차</span><br>1007-1 (약 1시간 20분)</li>
+                    <li><span class="traffic-highlight">사당역(4번 출구) → 월드컵경기장 하차</span><br>7000, 7001 (약 1시간)</li>
+                    <li><span class="traffic-highlight">강남역(7번 출구) → 월드컵경기장 하차</span><br>3002, 3007, 3008 (약 1시간)</li>
+                </ul>
+
+                <div class="traffic-title">🚘 승용차 이용 안내</div>
+                <ul class="traffic-list">
+                    <li><span class="traffic-highlight">신갈IC에서 진입</span><br>수원시내방면 직진 → 동수원사거리에서 우회전 → 100m 우측</li>
+                    <li><span class="traffic-highlight">동수원IC 진입</span><br>수원시내방면 직진 → 창용문사거리에서 좌회전 → 800m 좌측</li>
+                </ul>
+            </div>
+
+            <button onclick="closeMapModal()" style="width:100%; padding:12px; margin-top:20px; background:#f7f7f7; border:none; cursor:pointer; font-size: 13px;">닫기</button>
+        </div>
+    </div>
+
+    <!-- 사진 확대 팝업 -->
     <div class="photo-popup-overlay" id="photoPopup" onclick="closePopup()">
         <div class="popup-image-wrapper" onclick="event.stopPropagation()">
             <button class="popup-close-btn" onclick="closePopup()">✕</button>
@@ -400,6 +528,61 @@
             try { if (typeof Kakao !== 'undefined') Kakao.init('80c60a31a6631756bbf915ed70ed3e47'); } catch (e) {}
         })();
 
+        function createPetals() {
+            const container = document.getElementById('cherry-blossom-container');
+            const petalCount = 18; 
+
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                
+                const size = Math.random() * 10 + 10; 
+                const left = Math.random() * 150 - 50; 
+                
+                const durationFall = Math.random() * 3.5 + 4; 
+                const durationSway = Math.random() * 2 + 1.5; 
+                
+                const delayFall = -(Math.random() * 15); 
+                const delaySway = -(Math.random() * 5); 
+
+                petal.style.width = `${size}px`;
+                petal.style.height = `${size * 1.2}px`;
+                petal.style.left = `${left}%`;
+                
+                petal.style.animationDuration = `${durationFall}s, ${durationSway}s`;
+                petal.style.animationDelay = `${delayFall}s, ${delaySway}s`;
+
+                container.appendChild(petal);
+            }
+        }
+
+        function initTimer() {
+            const targetDate = new Date("2026-10-31T11:00:00+09:00").getTime();
+            
+            setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) {
+                    document.getElementById("t-days").innerText = "00";
+                    document.getElementById("t-hours").innerText = "00";
+                    document.getElementById("t-minutes").innerText = "00";
+                    document.getElementById("t-seconds").innerText = "00";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("t-days").innerText = String(days).padStart(2, '0');
+                document.getElementById("t-hours").innerText = String(hours).padStart(2, '0');
+                document.getElementById("t-minutes").innerText = String(minutes).padStart(2, '0');
+                document.getElementById("t-seconds").innerText = String(seconds).padStart(2, '0');
+            }, 1000);
+        }
+
         function initScrollAnimation() {
             const sections = document.querySelectorAll('section');
             const observer = new IntersectionObserver((entries) => {
@@ -410,13 +593,8 @@
                         entry.target.classList.remove('is-visible');
                     }
                 });
-            }, {
-                threshold: 0.1 
-            });
-
-            sections.forEach(section => {
-                observer.observe(section);
-            });
+            }, { threshold: 0.1 });
+            sections.forEach(section => observer.observe(section));
         }
 
         function openInvitation() {
@@ -460,6 +638,9 @@
         const totalImgCount = 20;
 
         window.addEventListener('DOMContentLoaded', () => {
+            createPetals(); 
+            initTimer(); 
+
             const thumbContainer = document.getElementById('popupThumbContainer');
             let thumbHtml = '';
             for (let i = 1; i <= totalImgCount; i++) {
@@ -538,6 +719,14 @@
             document.getElementById('accountModal').style.display = 'flex';
         }
         function closeAccModal() { document.getElementById('accountModal').style.display = 'none'; }
+        
+        function openMapModal() {
+            document.getElementById('mapModal').style.display = 'flex';
+        }
+        function closeMapModal() {
+            document.getElementById('mapModal').style.display = 'none';
+        }
+
         function copyAcc(num) {
             navigator.clipboard.writeText(num).then(() => alert("복사되었습니다."));
         }
