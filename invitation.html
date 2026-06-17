@@ -6,492 +6,342 @@
     <title>백승상 & 김효진 결혼합니다</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Canela 느낌의 고급스러운 세리프 폰트 Playfair Display 추가 -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        /* 기본 스타일 초기화 */
+        /* 기본 스타일 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #f7f7f7; 
-            color: #2b2b2b; 
-            line-height: 1.8;
-            letter-spacing: -0.02em;
-            overflow: hidden; 
+            background-color: #f7f7f7; color: #2b2b2b; 
+            line-height: 1.8; letter-spacing: -0.02em; overflow-x: hidden;
         }
 
-        /* 1단계: 전체화면 메인 인트로 커버 */
+        /* PC에서도 모바일 본문 크기(max-width: 450px)에 맞춰 중앙에만 꽉 차도록 수정 */
         #intro-cover {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: #ffffff;
-            z-index: 5000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+            width: 100%; max-width: 450px; height: 100vh;
+            background-color: #ffffff; z-index: 5000;
+            display: flex; flex-direction: column; align-items: center; /* justify-content 제거하여 상단 배치 용이하게 함 */
+            cursor: pointer; transition: opacity 0.8s ease, transform 0.8s ease;
+            box-shadow: 0 0 30px rgba(0,0,0,0.05);
         }
-
-        .intro-title {
-            font-family: 'Nanum Myeongjo', serif;
-            font-size: 24px;
-            font-weight: 400;
-            margin-bottom: 8px;
-            letter-spacing: 0.05em;
-            color: #1a1a1a;
+        #intro-cover.hide { opacity: 0; transform: translate(-50%, -30px); pointer-events: none; }
+        
+        /* 썸네일 이미지를 인트로 규격 내에서 가득 채우기 */
+        .intro-img-wrapper { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100vh; 
+            overflow: hidden; z-index: 1; 
         }
-        .intro-date {
-            font-size: 11px;
-            color: #888888;
-            letter-spacing: 0.15em;
-            margin-bottom: 35px;
-            text-transform: uppercase;
-        }
-        .intro-img-wrapper {
-            width: 85%;
-            max-width: 380px;
-            height: 55vh;
-            overflow: hidden;
-            margin-bottom: 35px;
-            position: relative;
-        }
-        .intro-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .intro-guide {
-            font-size: 12px;
-            color: #999;
-            letter-spacing: 0.05em;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        #intro-cover.hide {
-            opacity: 0;
-            transform: translateY(-30px);
-            pointer-events: none;
+        .intro-img { 
+            width: 100%; height: 100%; object-fit: cover; 
         }
         
-        /* 모바일 청첩장 본체 컨테이너 외곽 배치 */
-        .wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            opacity: 0; 
-            transition: opacity 1s ease 0.2s;
-        }
-        .wrapper.show {
-            opacity: 1;
+        /* 사진 위 글씨가 찰떡같이 돋보이도록 해주는 은은한 감성 음영 틴트 */
+        .intro-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.4) 100%);
+            z-index: 2;
         }
 
-        .container {
+        /* -------------------------------------
+           상단 배치 및 세 줄 텍스트 애니메이션 설정
+           ------------------------------------- */
+        .intro-content {
+            position: relative; 
+            z-index: 3; 
+            text-align: center; 
             width: 100%;
-            max-width: 450px;
-            background-color: #ffffff;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.03);
-            text-align: center;
-            position: relative;
-            padding-bottom: 60px;
+            margin-top: 12vh; /* 화면 상단에서 12% 내려온 위치에 배치 */
+        }
+        
+        /* SVG 크기 조절: 세 줄이 들어가도록 높이를 키움 */
+        .signature-svg {
+            width: 100%; 
+            max-width: 380px; 
+            height: 250px; 
         }
 
+        .signature-text {
+            font-family: 'Playfair Display', serif; /* Canela 느낌의 세리프 폰트 */
+            font-style: italic; /* 약간 기울임꼴 적용으로 우아함 강조 */
+            font-size: 55px; /* 글씨 크기 조정 */
+            fill: transparent; /* 처음엔 색상이 없음 */
+            stroke: #ffffff; /* 테두리 선 색상 */
+            stroke-width: 1px;
+            stroke-dasharray: 800;
+            stroke-dashoffset: 800;
+            /* 1. 선을 그리는 애니메이션 2. 색상을 채우는 애니메이션 */
+            animation: drawStroke 3s cubic-bezier(0.4, 0, 0.2, 1) forwards, 
+                       fillColor 1.5s ease 2s forwards;
+        }
+
+        /* 각 줄마다 그려지는 타이밍을 약간씩 다르게 주어 자연스럽게 연출 */
+        .line1 { animation-delay: 0s, 2s; }
+        .line2 { animation-delay: 0.5s, 2.5s; }
+        .line3 { animation-delay: 1s, 3s; }
+
+        @keyframes drawStroke {
+            0% { stroke-dashoffset: 800; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        @keyframes fillColor {
+            0% { fill: transparent; text-shadow: none; }
+            100% { fill: #ffffff; text-shadow: 0 2px 15px rgba(0,0,0,0.5); }
+        }
+        /* ------------------------------------- */
+
+        .intro-guide { 
+            position: absolute; bottom: 8vh; left: 50%; transform: translateX(-50%);
+            z-index: 3; font-size: 11px; color: rgba(255,255,255,0.7); 
+            letter-spacing: 0.2em; animation: blink 1.5s infinite; 
+            text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+            width: 100%; text-align: center;
+        }
+        @keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+        /* 메인 컨테이너 */
+        .wrapper { width: 100%; opacity: 0; transition: opacity 1s ease 0.2s; display: flex; justify-content: center; }
+        .wrapper.show { opacity: 1; }
+        .container { width: 100%; max-width: 450px; background-color: #ffffff; text-align: center; padding-bottom: 60px; box-shadow: 0 0 20px rgba(0,0,0,0.02); }
+        
+        /* 스크롤 섹션 트랜지션 (위아래 반복 애니메이션) */
         section { 
             padding: 70px 24px; 
             border-bottom: 1px solid #eaeaea; 
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.25, 0.8, 0.25, 1), transform 1s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
-        .title-serif { 
-            font-family: 'Nanum Myeongjo', serif; 
-            color: #1a1a1a; 
-            font-weight: 400; 
-            letter-spacing: 0.05em;
-        }
+        .title-serif { font-family: 'Nanum Myeongjo', serif; color: #1a1a1a; font-weight: 400; }
 
-        /* 배경음악 플레이어 고정 */
-        .bgm-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            padding: 5px 12px;
-            border-radius: 0px; 
-            font-size: 10px;
-            border: 1px solid #dbdbdb;
-            letter-spacing: 0.05em;
-            color: #666;
-            display: none; 
-        }
+        /* 배경음악 */
+        .bgm-container { position: fixed; top: 20px; right: 20px; z-index: 1000; background: rgba(255,255,255,0.8); backdrop-filter: blur(5px); padding: 5px 12px; font-size: 10px; border: 1px solid #dbdbdb; display: none; }
 
-        /* 1. 메인 섹션 */
-        .main-sec { background-color: #ffffff; padding-top: 90px; }
-        .main-sec h1 { font-size: 23px; margin-bottom: 10px; font-weight: 400; }
-        .main-sec .date { 
-            font-size: 12px; 
-            color: #888888; 
-            margin-bottom: 40px; 
-            letter-spacing: 0.15em; 
-            text-transform: uppercase;
+        /* 메인 섹션 */
+        .main-sec { padding-top: 90px; }
+        .main-img { width: 100%; max-height: 500px; object-fit: cover; margin-bottom: 40px; }
+
+        /* 갤러리 섹션 스타일 */
+        .gallery-wrapper-relative { position: relative; width: 100%; margin-top: 25px; }
+        .gallery-slider-container {
+            width: 100%; overflow-x: auto; display: flex;
+            scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
         }
-        .main-img { 
+        .gallery-slider-container::-webkit-scrollbar { display: none; }
+        
+        .gallery-page-block { flex: 0 0 100%; width: 100%; scroll-snap-align: start; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        
+        .gallery-page-block img { 
             width: 100%; 
-            max-height: 500px; 
+            height: auto; 
+            aspect-ratio: 3 / 4; 
             object-fit: cover; 
-            margin-bottom: 40px; 
-            border-radius: 0px; 
-        }
-        .main-names { font-size: 18px; font-weight: 400; }
-        .main-names small { color: #999; font-size: 12px; margin-left: 2px; }
-
-        /* D-Day 카운트다운 */
-        .dday-box {
-            margin-top: 35px;
-            border-top: 1px solid #111;
-            border-bottom: 1px solid #111;
-            padding: 12px 0;
-            display: block;
-            font-size: 12px;
-            letter-spacing: 0.1em;
-            color: #111;
-        }
-        .dday-box span { font-size: 13px; font-weight: 700; color: #111; margin-left: 6px; }
-
-        /* 2. 초대글 섹션 */
-        .intro-sec p { font-size: 13px; margin-bottom: 20px; color: #4a4a4a; line-height: 2.1; }
-        .family-relation { 
-            margin-top: 60px; 
-            font-size: 13px; 
-            line-height: 2.4; 
-            color: #555555; 
-            border-top: 1px solid #f0f0f0; 
-            padding-top: 40px; 
-        }
-        .family-relation strong { color: #000000; font-weight: 700; }
-
-        /* 3. 연락하기 섹션 */
-        .contact-btn {
-            display: inline-block;
-            padding: 6px 14px;
-            margin: 0 2px;
-            border: 1px solid #dcdcdc;
-            text-decoration: none;
-            color: #666;
-            font-size: 11px;
-            background: #fff;
-            letter-spacing: 0.05em;
-            transition: all 0.3s ease;
-        }
-        .contact-btn:hover {
-            border-color: #111;
-            color: #111;
+            cursor: pointer; 
         }
 
-        /* 4. 갤러리 섹션 */
-        .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 30px; }
-        .gallery-grid img { width: 100%; height: 180px; object-fit: cover; border-radius: 0px; }
-
-        /* 5. 오시는 길 */
-        .map-container {
-            width: 100%;
-            height: 280px;
-            margin: 30px 0 15px 0;
-            border: 1px solid #eaeaea;
-            background-color: #fafafa;
+        .gallery-nav-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 35px; height: 35px; background: rgba(255,255,255,0.9);
+            border: 1px solid #eee; border-radius: 50%; z-index: 10; cursor: pointer;
+            display: flex; justify-content: center; align-items: center; font-size: 18px; color: #666;
         }
+        .gallery-nav-btn.prev { left: -15px; }
+        .gallery-nav-btn.next { right: -15px; }
+
+        .gallery-dots { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+        .dot { width: 6px; height: 6px; background-color: #eee; border-radius: 50%; transition: 0.3s; }
+        .dot.active { background-color: #111; transform: scale(1.2); }
+
+        /* 스마트 팝업 라이트박스 시스템 */
+        .photo-popup-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.95); z-index: 7000;
+            display: none; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .popup-image-wrapper { width: 100%; max-width: 450px; position: relative; display: flex; justify-content: center; align-items: center; height: 60vh; }
+        #popupImg { max-width: 90%; max-height: 100%; object-fit: contain; }
         
-        .map-navigation-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1px;
-            background-color: #eaeaea;
-            padding: 1px 0;
-            margin-top: 5px;
+        .popup-nav-btn {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: none; border: none; color: #fff; font-size: 40px; cursor: pointer; padding: 20px; z-index: 7010;
         }
-        .navi-btn {
-            flex: 1;
-            padding: 13px;
-            text-decoration: none;
-            font-size: 12px;
-            color: #555555;
-            background-color: #ffffff;
-            display: inline-block;
-            letter-spacing: 0.05em;
-        }
-        .navi-btn:hover { color: #111; background-color: #fafafa; }
+        .popup-nav-btn.prev { left: 0; }
+        .popup-nav-btn.next { right: 0; }
+        .popup-close-btn { position: absolute; top: -50px; right: 10px; color: #fff; font-size: 30px; background: none; border: none; cursor: pointer; }
 
-        /* 교통안내 텍스트 디자인 */
+        .popup-thumb-container {
+            width: 100%; max-width: 420px; margin-top: 25px; padding: 10px 16px;
+            overflow-x: auto; display: flex; gap: 8px; -webkit-overflow-scrolling: touch;
+            align-items: center;
+        }
+        .popup-thumb-container::-webkit-scrollbar { display: none; }
+        .popup-thumb-img {
+            width: 48px; height: 64px; object-fit: cover; cursor: pointer;
+            opacity: 0.4; border: 2px solid transparent; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); flex: 0 0 auto;
+        }
+        .popup-thumb-img.active {
+            opacity: 1; border-color: #ffffff; transform: scale(1.12) translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 오시는 길 지도 및 교통 정보 */
+        .map-container { width: 100%; height: 280px; margin: 30px 0 15px; border: 1px solid #eaeaea; background: #fafafa; }
+        .map-navigation-buttons { display: flex; gap: 1px; background: #eaeaea; padding: 1px 0; margin-bottom: 25px; }
+        .navi-btn { flex: 1; padding: 13px; background: #fff; text-decoration: none; font-size: 12px; color: #555; }
+        
+        .traffic-guide-img { width: 100%; height: auto; object-fit: contain; margin-top: 15px; border: 1px solid #eaeaea; }
+
         .traffic-info {
-            text-align: left; 
-            margin-top: 35px; 
-            font-size: 12px; 
-            line-height: 2.0; 
-            color: #2b2b2b; 
-            border-top: 1px dashed #eaeaea; 
-            padding-top: 25px;
+            text-align: left; margin-top: 25px; font-size: 12px; line-height: 2.0; color: #2b2b2b; border-top: 1px dashed #eaeaea; padding-top: 25px;
         }
         .traffic-info p { color: #2b2b2b; }
         .traffic-info strong { color: #111; }
 
-        /* 6. 마음 전하실 곳 */
-        .account-trigger-buttons {
-            display: flex;
-            justify-content: center;
-            margin-top: 25px;
-            gap: 10px;
-        }
-        .account-trigger-btn {
-            flex: 1;
-            padding: 14px;
-            font-size: 12px;
-            background-color: #ffffff;
-            color: #111111;
-            border: 1px solid #111111;
-            cursor: pointer;
-            letter-spacing: 0.05em;
-            transition: all 0.2s ease;
-        }
-        .account-trigger-btn:hover {
-            background-color: #111111;
-            color: #ffffff;
-        }
-
-        /* 팝업 모달 배경 */
+        /* 계좌번호 모달 */
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4); 
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            z-index: 6000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.25s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(3px); z-index: 6000;
+            display: none; justify-content: center; align-items: center;
         }
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal-content {
-            background-color: #ffffff;
-            width: 85%;
-            max-width: 360px;
-            padding: 24px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            text-align: left;
-            transform: translateY(10px);
-            transition: transform 0.25s ease;
-        }
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
-
-        .modal-header {
-            font-size: 12px;
-            color: #111;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #f0f0f0;
-            padding-bottom: 8px;
-            text-align: center;
-        }
-
-        .account-list-item {
-            padding: 12px 0;
-            border-bottom: 1px dashed #eaeaea;
-        }
-        .account-list-item:last-child {
-            border-bottom: none;
-        }
-        .account-info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-        }
-        .account-user {
-            font-weight: 400;
-            color: #333;
-        }
-        .account-user span {
-            font-size: 11px;
-            color: #888;
-            margin-left: 5px;
-        }
-        .account-number-box {
-            font-size: 13px;
-            color: #111;
-            margin-top: 4px;
-            font-weight: 500;
-        }
+        .modal-content { background: #fff; width: 85%; max-width: 360px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .account-list-item { padding: 15px 0; border-bottom: 1px dashed #eee; text-align: left; }
+        .btn-copy-mini { padding: 4px 10px; font-size: 11px; background: #111; color: #fff; border: none; cursor: pointer; float: right; }
         
-        .modal-footer {
-            display: flex;
-            gap: 6px;
-            margin-top: 15px;
-        }
-        .modal-footer button {
-            flex: 1;
-            padding: 11px;
-            font-size: 11px;
-            cursor: pointer;
-            letter-spacing: 0.02em;
-            background: #fff;
-            border: 1px solid #111;
-            color: #111;
-            font-weight: 500;
-        }
-        .btn-copy-mini {
-            padding: 4px 10px;
-            font-size: 11px;
-            background-color: #111;
-            color: #fff;
-            border: 1px solid #111;
-            cursor: pointer;
-        }
-        .btn-copy-mini:hover { opacity: 0.9; }
-
-        /* 하단 공유 및 폼 */
-        .share-btn {
-            display: block;
-            background-color: #fee500; 
-            color: #181600; 
-            padding: 15px;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-            margin: 20px 0;
-            letter-spacing: 0.05em;
-        }
-        .survey-box {
-            border: 1px solid #eaeaea;
-            padding: 30px 20px;
-            margin-top: 30px;
-        }
-        .survey-box p {
-            font-size: 13px;
-            color: #555;
-            margin-bottom: 20px;
-            line-height: 1.8;
-        }
-        .survey-box button {
-            padding: 10px 24px;
-            border: 1px solid #111111;
-            background: #fff;
-            color: #111111;
-            font-size: 12px;
-            cursor: pointer;
-            margin-top: 10px;
-            letter-spacing: 0.05em;
-            transition: all 0.2s;
-        }
-        .survey-box button:hover { background: #111111; color: #fff; }
+        /* 버튼 시스템 디자인 */
+        .account-trigger-btn { flex: 1; padding: 14px; font-size: 12px; background: #fff; border: 1px solid #111; cursor: pointer; }
+        .share-btn { display: block; background: #fee500; color: #181600; padding: 15px; text-decoration: none; font-size: 13px; margin: 20px 0 8px 0; font-weight: 500; }
+        .url-copy-btn { display: block; background: #222222; color: #ffffff; padding: 14px; text-decoration: none; font-size: 12px; font-weight: 400; border: none; width: 100%; cursor: pointer; letter-spacing: 0.05em; transition: background 0.2s ease; }
+        .url-copy-btn:hover { background: #111111; }
     </style>
 </head>
 <body>
 
+    <!-- PC/모바일 상관없이 450px 규격 내에서 꽉 차는 인트로 -->
     <div id="intro-cover" onclick="openInvitation()">
-        <h1 class="intro-title">백승상 & 김효진</h1>
-        <p class="intro-date">2026. 10. 31. SAT. 11:00 AM</p>
-        
         <div class="intro-img-wrapper">
-            <img src="main.jpg" alt="결혼식 메인 사진" class="intro-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=500';">
+            <img src="img/Thumbnail.jpg" class="intro-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=1000';">
+            <div class="intro-overlay"></div>
+        </div>
+        
+        <div class="intro-content">
+            <!-- 세 줄로 나뉘어 순차적으로 획이 그어지는 SVG 애니메이션 -->
+            <svg class="signature-svg" viewBox="0 0 400 250">
+                <!-- Save -->
+                <text x="50%" y="40" text-anchor="middle" dominant-baseline="middle" class="signature-text line1">
+                    Save
+                </text>
+                <!-- The -->
+                <text x="50%" y="120" text-anchor="middle" dominant-baseline="middle" class="signature-text line2">
+                    The
+                </text>
+                <!-- Date -->
+                <text x="50%" y="200" text-anchor="middle" dominant-baseline="middle" class="signature-text line3">
+                    Date
+                </text>
+            </svg>
         </div>
         
         <p class="intro-guide">TAP TO OPEN</p>
     </div>
 
     <div class="bgm-container" id="bgmWrapper">
-        BGM: Photograph 
-        <audio id="bgm" src="Photograph.mp3" loop controls style="display:none;"></audio>
-        <button onclick="toggleBgm()" id="bgmBtn" style="border:none; background:none; cursor:pointer; font-size:10px; color: #111; margin-left:4px;">PAUSE</button>
+        BGM: LANY - Out Of My League
+        <audio id="bgm" src="LANY - Out Of My League.mp3" loop></audio>
+        <button onclick="toggleBgm()" id="bgmBtn" style="border:none; background:none; cursor:pointer; color:#111; margin-left:5px;">PAUSE</button>
     </div>
 
     <div class="wrapper" id="mainWrapper">
         <div class="container">
             
             <section class="main-sec">
-                <h1 class="title-serif">백승상 & 김효진</h1>
-                <p class="date">2026. 10. 31. SAT. 11:00 AM</p>
-                
-                <img src="main.jpg" alt="결혼식 메인 사진" class="main-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=500';">
-                
-                <p class="main-names title-serif">백승상 <small>(29)</small> — 김효진 <small>(27)</small></p>
-                <p style="margin-top: 12px; font-size: 13px; color: #666; letter-spacing: 0.02em;">노블레스웨딩컨벤션 7층 컨벤션홀</p>
-
-                <div class="dday-box title-serif">
-                    COUNTDOWN <span id="dday-count">D-00</span>
-                </div>
+                <h1 class="title-serif" style="font-size:23px; margin-bottom:10px;">백승상 & 김효진</h1>
+                <p style="font-size:12px; color:#888; margin-bottom:40px; letter-spacing:0.15em;">2026. 10. 31. SAT. 11:00 AM</p>
+                <img src="img/main.jpg" class="main-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=500';">
+                <p class="main-names title-serif">백승상 — 김효진</p>
+                <p style="margin-top:12px; font-size:13px; color:#666;">노블레스웨딩컨벤션 7층 컨벤션홀</p>
             </section>
 
-            <section class="intro-sec">
-                <h2 class="title-serif" style="margin-bottom: 35px; font-size: 17px; color: #777; letter-spacing: 0.1em;">INVITATION</h2>
-                <p>
+            <section>
+                <h2 class="title-serif" style="margin-bottom:35px; font-size:17px; color:#777;">INVITATION</h2>
+                <p style="font-size:13px; color:#4a4a4a; line-height:2.1;">
                     서로 다른 색으로 살아온 저희 두 사람이<br>
                     이제 하나의 아름다운 색으로 발맞추어 나아가려 합니다.<br>
                     새로운 출발의 자리에 오셔서 축복해 주시면 감사하겠습니다.
                 </p>
-                <div class="family-relation title-serif">
+                <div style="margin-top:50px; font-size:13px; border-top:1px solid #f0f0f0; padding-top:40px;">
                     <div>신랑 아버지 <strong>백광현</strong> · 어머니 <strong>심지나</strong> 의 장남 <strong>승상</strong></div>
                     <div>신부 아버지 <strong>김재중</strong> · 어머니 <strong>오선영</strong> 의 장녀 <strong>효진</strong></div>
                 </div>
             </section>
 
-            <section>
-                <h2 class="title-serif" style="margin-bottom: 30px; font-size: 16px; color:#777; letter-spacing:0.05em;">CONTACT</h2>
-                <div style="margin-bottom: 16px; font-size: 13px;">
-                    <span style="font-weight: 300; margin-right: 12px; color:#555;">신랑 백승상</span>
-                    <a href="tel:010-8467-9367" class="contact-btn">CALL</a>
-                    <a href="sms:010-8467-9367" class="contact-btn">MESSAGE</a>
+            <section id="gallery-section">
+                <h2 class="title-serif" style="margin-bottom:10px; font-size:16px; color:#777;">MOMENTS</h2>
+                <p style="font-size:11px; color:#999; margin-bottom:20px;">화살표를 누르거나 옆으로 밀어서 사진을 감상해 보세요</p>
+                
+                <div class="gallery-wrapper-relative">
+                    <button class="gallery-nav-btn prev" onclick="moveGallery('prev')">‹</button>
+                    <button class="gallery-nav-btn next" onclick="moveGallery('next')">›</button>
+
+                    <div class="gallery-slider-container" id="galleryContainer" onscroll="updateGalleryDots()">
+                        <div class="gallery-page-block">
+                            <img src="img/photo1.jpg" onclick="openPopup(1)" onerror="this.src='https://placehold.co/300x400?text=1'">
+                            <img src="img/photo2.jpg" onclick="openPopup(2)" onerror="this.src='https://placehold.co/300x400?text=2'">
+                            <img src="img/photo3.jpg" onclick="openPopup(3)" onerror="this.src='https://placehold.co/300x400?text=3'">
+                            <img src="img/photo4.jpg" onclick="openPopup(4)" onerror="this.src='https://placehold.co/300x400?text=4'">
+                        </div>
+                        <div class="gallery-page-block">
+                            <img src="img/photo5.jpg" onclick="openPopup(5)" onerror="this.src='https://placehold.co/300x400?text=5'">
+                            <img src="img/photo6.jpg" onclick="openPopup(6)" onerror="this.src='https://placehold.co/300x400?text=6'">
+                            <img src="img/photo7.jpg" onclick="openPopup(7)" onerror="this.src='https://placehold.co/300x400?text=7'">
+                            <img src="img/photo8.jpg" onclick="openPopup(8)" onerror="this.src='https://placehold.co/300x400?text=8'">
+                        </div>
+                        <div class="gallery-page-block">
+                            <img src="img/photo9.jpg" onclick="openPopup(9)" onerror="this.src='https://placehold.co/300x400?text=9'">
+                            <img src="img/photo10.jpg" onclick="openPopup(10)" onerror="this.src='https://placehold.co/300x400?text=10'">
+                            <img src="img/photo11.jpg" onclick="openPopup(11)" onerror="this.src='https://placehold.co/300x400?text=11'">
+                            <img src="img/photo12.jpg" onclick="openPopup(12)" onerror="this.src='https://placehold.co/300x400?text=12'">
+                        </div>
+                        <div class="gallery-page-block">
+                            <img src="img/photo13.jpg" onclick="openPopup(13)" onerror="this.src='https://placehold.co/300x400?text=13'">
+                            <img src="img/photo14.jpg" onclick="openPopup(14)" onerror="this.src='https://placehold.co/300x400?text=14'">
+                            <img src="img/photo15.jpg" onclick="openPopup(15)" onerror="this.src='https://placehold.co/300x400?text=15'">
+                            <img src="img/photo16.jpg" onclick="openPopup(16)" onerror="this.src='https://placehold.co/300x400?text=16'">
+                        </div>
+                        <div class="gallery-page-block">
+                            <img src="img/photo17.jpg" onclick="openPopup(17)" onerror="this.src='https://placehold.co/300x400?text=17'">
+                            <img src="img/photo18.jpg" onclick="openPopup(18)" onerror="this.src='https://placehold.co/300x400?text=18'">
+                            <img src="img/photo19.jpg" onclick="openPopup(19)" onerror="this.src='https://placehold.co/300x400?text=19'">
+                            <img src="img/photo20.jpg" onclick="openPopup(20)" onerror="this.src='https://placehold.co/300x400?text=20'">
+                        </div>
+                    </div>
                 </div>
-                <div style="font-size: 13px;">
-                    <span style="font-weight: 300; margin-right: 12px; color:#555;">신부 김효진</span>
-                    <a href="tel:010-9445-9806" class="contact-btn">CALL</a>
-                    <a href="sms:010-9445-9806" class="contact-btn">MESSAGE</a>
+
+                <div class="gallery-dots">
+                    <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
                 </div>
             </section>
 
             <section>
-                <h2 class="title-serif" style="margin-bottom: 30px; font-size: 16px; color:#777; letter-spacing: 0.1em;">MOMENTS</h2>
-                <div class="gallery-grid">
-                    <img src="photo1.jpg" onerror="this.src='https://images.unsplash.com/photo-1606800052052-a08af7148866?w=300';" alt="갤러리1">
-                    <img src="photo2.jpg" onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=300';" alt="갤러리2">
-                    <img src="photo3.jpg" onerror="this.src='https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=300';" alt="갤러리3">
-                    <img src="photo4.jpg" onerror="this.src='https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=300';" alt="갤러리4">
-                </div>
-            </section>
-
-            <section>
-                <h2 class="title-serif" style="font-size: 16px; margin-bottom: 25px; color:#777; letter-spacing: 0.1em;">LOCATION</h2>
-                <p style="font-weight: 400; font-size: 15px; color:#111;">노블레스웨딩컨벤션 7층 컨벤션홀</p>
-                <p style="font-size: 12px; color:#777; margin-top: 5px;">경기 수원시 팔달구 팔달문로 128</p>
-
+                <h2 class="title-serif" style="font-size:16px; margin-bottom:25px; color:#777;">LOCATION</h2>
+                <p style="font-size:15px; color:#111;">노블레스웨딩컨벤션 7층 컨벤션홀</p>
+                <p style="font-size:12px; color:#777;">경기 수원시 팔달구 팔달문로 128</p>
+                
                 <div id="daumKakaoMap" class="map-container"></div>
-
+                
                 <div class="map-navigation-buttons">
                     <a href="https://naver.me/57VZk9UM" target="_blank" class="navi-btn">NAVER MAP</a>
                     <a href="https://map.kakao.com/link/to/노블레스웨딩컨벤션,37.281555,127.030294" target="_blank" class="navi-btn">KAKAO MAP</a>
                 </div>
+
+                <img src="img/traffic.jpg" class="traffic-guide-img" onerror="this.style.display='none';" alt="교통 및 주차 안내 약도">
 
                 <div class="traffic-info">
                     <p><strong>🚘 주차 안내 —</strong> 건물 내 지하주차장 및 외부 제2주차장 무료 이용 가능 (2시간 제공)</p>
@@ -500,197 +350,224 @@
             </section>
 
             <section>
-                <h2 class="title-serif" style="margin-bottom: 10px; font-size: 16px; color:#777; letter-spacing: 0.1em;">REGISTRY</h2>
-                <div class="account-trigger-buttons">
-                    <button class="account-trigger-btn" onclick="openModal('groom')">신랑측 계좌번호</button>
-                    <button class="account-trigger-btn" onclick="openModal('bride')">신부측 계좌번호</button>
+                <h2 class="title-serif" style="margin-bottom:10px; font-size:16px; color:#777;">REGISTRY</h2>
+                <div style="display:flex; gap:10px; margin-top:25px;">
+                    <button class="account-trigger-btn" onclick="openAccModal('groom')">신랑측 계좌번호</button>
+                    <button class="account-trigger-btn" onclick="openAccModal('bride')">신부측 계좌번호</button>
                 </div>
             </section>
 
-            <section style="border-bottom: none; padding-bottom: 20px;">
+            <section style="border-bottom:none;">
                 <a href="#" onclick="shareKakaoTalk(event)" class="share-btn">💬 카카오톡으로 청첩장 공유하기</a>
-                <div class="survey-box">
-                    <h3 class="title-serif" style="font-size:14px; margin-bottom:12px; letter-spacing: 0.05em;">ATTENDANCE</h3>
-                    <p>식사 준비와 원활한 예식 진행을 위해<br>참석 여부를 미리 알려주시면 감사하겠습니다.</p>
-                    <button onclick="alert('준비 중인 폼입니다. 구글 폼이나 네이버 폼 링크를 연결해 보세요!')">참석 명단 작성하기</button>
-                </div>
+                <button onclick="copyInvitationUrl()" class="url-copy-btn">🔗 청첩장 링크 주소 복사하기</button>
             </section>
-
         </div>
     </div>
 
-    <div class="modal-overlay" id="accountModal" onclick="closeModalOnOverlay(event)">
-        <div class="modal-content">
-            <div class="modal-header" id="modalHeader">ACCOUNT NUMBER</div>
+    <div class="modal-overlay" id="accountModal" onclick="closeAccModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h3 id="modalTitle" style="font-size:14px; margin-bottom:20px;"></h3>
             <div id="modalAccountList"></div>
-            <div class="modal-footer">
-                <button onclick="closeModal()">닫 기</button>
-            </div>
+            <button onclick="closeAccModal()" style="width:100%; padding:12px; margin-top:20px; background:#f7f7f7; border:none;">닫기</button>
         </div>
     </div>
 
-    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js" integrity="sha384-lsSknWwDXgOp0GsihBeu7e5K62JptxsfVA18KVGlYNoKMDKilY0ampsoreGsxoWv" crossorigin="anonymous"></script>
+    <!-- 전체화면 팝업 시스템 -->
+    <div class="photo-popup-overlay" id="photoPopup" onclick="closePopup()">
+        <div class="popup-image-wrapper" onclick="event.stopPropagation()">
+            <button class="popup-close-btn" onclick="closePopup()">✕</button>
+            <button class="popup-nav-btn prev" onclick="changePopupPhoto(-1)">‹</button>
+            <img src="" id="popupImg">
+            <button class="popup-nav-btn next" onclick="changePopupPhoto(1)">›</button>
+        </div>
+        <div class="popup-thumb-container" id="popupThumbContainer" onclick="event.stopPropagation()"></div>
+    </div>
+
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.1/kakao.min.js"></script>
 
     <script>
-        // 전역 네임스페이스 격리 상태에서 안전 초기화 즉시 강제 수립
         (function() {
-            try {
-                if (typeof Kakao !== 'undefined') {
-                    Kakao.init('80c60a31a6631756bbf915ed70ed3e47');
-                }
-            } catch (e) {
-                console.error("카카오 쉐어 코어 엔진 강제 예외 처리:", e);
-            }
+            try { if (typeof Kakao !== 'undefined') Kakao.init('80c60a31a6631756bbf915ed70ed3e47'); } catch (e) {}
         })();
 
-        // 공유 기능 핵심 엔진 (지도 스크립트가 덮어씌우는 현상을 원천 방어하도록 설계)
-        function shareKakaoTalk(event) {
-            event.preventDefault(); 
+        function initScrollAnimation() {
+            const sections = document.querySelectorAll('section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        entry.target.classList.remove('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1 
+            });
 
-            if (typeof Kakao === 'undefined' || typeof Kakao.Share === 'undefined') {
-                alert("카카오톡 공유 모듈을 불러오는 중입니다. 1~2초 후 다시 눌러주세요!\n\n※ 만약 PC에서 파일을 직접 더블 클릭해 열었다면 보안상 실행되지 않으므로, 깃허브 실서버 링크로 접속하셔야 합니다.");
-                return;
-            }
-
-            if (!Kakao.isInitialized()) {
-                alert("카카오 설정 매칭 오류입니다.\n\n카카오 개발자 센터 [Web 플랫폼] 메뉴에 현재 주소 전체가 등록되어 있는지 다시 확인해 주세요.\n현재 주소: https://wbbak0100.github.io/wedding");
-                return;
-            }
-
-            const currentUrl = window.location.href.split('?')[0]; 
-            const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
-
-            Kakao.Share.sendDefault({
-                objectType: 'feed', 
-                content: {
-                    title: '백승상 🤍 김효진 결혼합니다.', 
-                    description: '2026.10.31 토요일 오전 11:00\n수원 노블레스웨딩컨벤션 7층 컨벤션홀', 
-                    imageUrl: baseUrl + '/main.jpg', 
-                    link: { mobileWebUrl: currentUrl, webUrl: currentUrl },
-                },
-                buttons: [
-                    { title: '모바일 청첩장 보기', link: { mobileWebUrl: currentUrl, webUrl: currentUrl } },
-                ],
-                installTalk: true, 
+            sections.forEach(section => {
+                observer.observe(section);
             });
         }
 
-        // 인트로 커버 제어 및 지도 동적 스크립트 인젝션 엔진 (완벽한 충돌 분리 기술)
         function openInvitation() {
-            const intro = document.getElementById('intro-cover');
-            intro.classList.add('hide');
-
-            const mainWrapper = document.getElementById('mainWrapper');
-            mainWrapper.classList.add('show');
-
+            document.getElementById('intro-cover').classList.add('hide');
+            document.getElementById('mainWrapper').classList.add('show');
             document.getElementById('bgmWrapper').style.display = 'block';
-            document.body.style.overflow = 'auto';
-
-            const audio = document.getElementById('bgm');
-            audio.play().catch(e => console.log("자동재생 제약 우회"));
-
-            // 카카오 지도 스크립트를 공유하기 초기화와 시간차를 두고 동적으로 인젝션하여 간섭 원천 배제
-            setTimeout(function() {
-                if (typeof window.mapInstance === 'undefined') {
-                    const mapScript = document.createElement('script');
-                    mapScript.type = 'text/javascript';
-                    // 지도 로딩 도중 autoload 방지 처리
-                    mapScript.src = 'https://dapi.kakao.com/v2/maps/sdk.js?appkey=80c60a31a6631756bbf915ed70ed3e47&autoload=false';
-                    
-                    mapScript.onload = function() {
-                        if (typeof kakao !== 'undefined' && kakao.maps) {
-                            kakao.maps.load(function() {
-                                const mapContainer = document.getElementById('daumKakaoMap'); 
-                                const mapOption = { center: new kakao.maps.LatLng(37.281555, 127.030294), level: 3 };
-
-                                window.mapInstance = new kakao.maps.Map(mapContainer, mapOption); 
-                                const markerPosition  = new kakao.maps.LatLng(37.281555, 127.030294); 
-
-                                const marker = new kakao.maps.Marker({ position: markerPosition });
-                                marker.setMap(window.mapInstance);
-
-                                const iwContent = '<div style="padding:7px 15px; font-size:12px; text-align:center; font-weight:500; min-width:160px; color:#111;">노블레스웨딩컨벤션</div>';
-                                const infowindow = new kakao.maps.InfoWindow({ content : iwContent });
-                                infowindow.open(window.mapInstance, marker);
-                            });
-                        }
-                    };
-                    document.head.appendChild(mapScript);
-                }
-            }, 400);
+            document.getElementById('bgm').play().catch(()=>{});
+            
+            initScrollAnimation();
+            
+            setTimeout(() => {
+                const mapScript = document.createElement('script');
+                mapScript.src = 'https://dapi.kakao.com/v2/maps/sdk.js?appkey=80c60a31a6631756bbf915ed70ed3e47&autoload=false';
+                mapScript.onload = () => {
+                    kakao.maps.load(() => {
+                        const container = document.getElementById('daumKakaoMap');
+                        const options = { center: new kakao.maps.LatLng(37.281555, 127.030294), level: 3 };
+                        const map = new kakao.maps.Map(container, options);
+                        const marker = new kakao.maps.Marker({ position: new kakao.maps.LatLng(37.281555, 127.030294) });
+                        marker.setMap(map);
+                    });
+                };
+                document.head.appendChild(mapScript);
+            }, 500);
         }
 
-        // D-Day 카운트다운 엔진
-        function getDday() {
-            const weddingDate = new Date("2026-10-31T11:00:00").getTime();
-            const now = new Date().getTime();
-            const distance = weddingDate - now;
-            const d = Math.ceil(distance / (1000 * 60 * 60 * 24));
-            const element = document.getElementById("dday-count");
-            if (d > 0) { element.innerText = "D-" + d; } 
-            else if (d === 0) { element.innerText = "D-DAY 🎉"; } 
-            else { element.innerText = "THANK YOU"; }
+        function moveGallery(dir) {
+            const container = document.getElementById('galleryContainer');
+            const step = container.clientWidth;
+            container.scrollBy({ left: dir === 'next' ? step : -step, behavior: 'smooth' });
         }
-        getDday();
-        setInterval(getDday, 60000);
 
-        // 양가 혼주 전용 고정 데이터셋
-        const familyAccounts = {
-            groom: {
-                title: "신랑측 마음 전하실 곳",
-                list: [
-                    { role: "신랑", name: "백승상", bank: "우리은행", num: "10024307636729" },
-                    { role: "아버지", name: "백광현", bank: "신한은행", num: "110-123-456789" },
-                    { role: "어머니", name: "심지나", bank: "국민은행", num: "345601-04-123456" }
-                ]
-            },
-            bride: {
-                title: "신부측 마음 전하실 곳",
-                list: [
-                    { role: "신부", name: "김효진", bank: "국민은행", num: "12345678901234" },
-                    { role: "아버지", name: "김재중", bank: "기업은행", num: "010-9445-9806-11" },
-                    { role: "어머니", name: "오선영", bank: "농협은행", num: "302-1234-5678-91" }
-                ]
+        function updateGalleryDots() {
+            const container = document.getElementById('galleryContainer');
+            const dots = document.querySelectorAll('.dot');
+            const idx = Math.round(container.scrollLeft / container.clientWidth);
+            dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        }
+
+        let currentImgIdx = 1;
+        const totalImgCount = 20;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const thumbContainer = document.getElementById('popupThumbContainer');
+            let thumbHtml = '';
+            for (let i = 1; i <= totalImgCount; i++) {
+                thumbHtml += `<img src="img/photo${i}.jpg" class="popup-thumb-img" id="pThumb${i}" onclick="jumpToPopupPhoto(${i})" onerror="this.src='https://placehold.co/45x60?text=${i}'">`;
             }
+            thumbContainer.innerHTML = thumbHtml;
+        });
+
+        function openPopup(idx) {
+            currentImgIdx = idx;
+            updatePopupImg();
+            document.getElementById('photoPopup').style.display = 'flex';
+        }
+
+        function closePopup() { document.getElementById('photoPopup').style.display = 'none'; }
+
+        function changePopupPhoto(step) {
+            currentImgIdx += step;
+            if (currentImgIdx > totalImgCount) currentImgIdx = 1;
+            if (currentImgIdx < 1) currentImgIdx = totalImgCount;
+            updatePopupImg();
+        }
+
+        function jumpToPopupPhoto(idx) {
+            currentImgIdx = idx;
+            updatePopupImg();
+        }
+
+        function updatePopupImg() {
+            document.getElementById('popupImg').src = 'img/photo' + currentImgIdx + '.jpg';
+            
+            const allThumbs = document.querySelectorAll('.popup-thumb-img');
+            allThumbs.forEach((thumb, index) => {
+                thumb.classList.toggle('active', (index + 1) === currentImgIdx);
+            });
+
+            const activeThumb = document.getElementById('pThumb' + currentImgIdx);
+            if (activeThumb) {
+                activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        }
+
+        let touchStartX = 0;
+        const popupOverlay = document.getElementById('photoPopup');
+        popupOverlay.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+        popupOverlay.addEventListener('touchend', e => {
+            const touchEndX = e.changedTouches[0].clientX;
+            if (touchStartX - touchEndX > 50) changePopupPhoto(1); 
+            if (touchEndX - touchStartX > 50) changePopupPhoto(-1); 
+        });
+
+        const accData = {
+            groom: { title: "신랑측 마음 전하실 곳", list: [
+                {name:"백승상", bank:"우리은행", num:"10024307636729"},
+                {name:"백광현(부)", bank:"신한은행", num:"110-123-456789"},
+                {name:"심지나(모)", bank:"국민은행", num:"345601-04-123456"}
+            ]},
+            bride: { title: "신부측 마음 전하실 곳", list: [
+                {name:"김효진", bank:"국민은행", num:"12345678901234"},
+                {name:"김재중(부)", bank:"기업은행", num:"010-9445-9806-11"},
+                {name:"오선영(모)", bank:"농협은행", num:"302-1234-5678-91"}
+            ]}
         };
 
-        // 모달창 제어 및 동적 리스트 렌더러
-        function openModal(side) {
-            const group = familyAccounts[side];
-            document.getElementById('modalHeader').innerText = group.title;
-            
-            let htmlContent = '';
-            group.list.forEach((acc) => {
-                htmlContent += `
-                    <div class="account-list-item">
-                        <div class="account-info-row">
-                            <div class="account-user">${acc.name} <span>(${acc.role})</span></div>
-                            <button class="btn-copy-mini" onclick="copyText('${acc.num}')">복사</button>
-                        </div>
-                        <div class="account-number-box">${acc.bank} ${acc.num}</div>
-                    </div>
-                `;
+        function openAccModal(side) {
+            const data = accData[side];
+            document.getElementById('modalTitle').innerText = data.title;
+            let html = '';
+            data.list.forEach(a => {
+                html += `<div class="account-list-item">
+                    <strong>${a.name}</strong> <button class="btn-copy-mini" onclick="copyAcc('${a.num}')">복사</button><br>
+                    <span style="font-size:13px; color:#666;">${a.bank} ${a.num}</span>
+                </div>`;
             });
-            
-            document.getElementById('modalAccountList').innerHTML = htmlContent;
-            document.getElementById('accountModal').classList.add('active');
+            document.getElementById('modalAccountList').innerHTML = html;
+            document.getElementById('accountModal').style.display = 'flex';
+        }
+        function closeAccModal() { document.getElementById('accountModal').style.display = 'none'; }
+        function copyAcc(num) {
+            navigator.clipboard.writeText(num).then(() => alert("복사되었습니다."));
         }
 
-        function closeModal() { document.getElementById('accountModal').classList.remove('active'); }
-        function closeModalOnOverlay(event) { if (event.target === document.getElementById('accountModal')) { closeModal(); } }
-
-        function copyText(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert("계좌번호가 복사되었습니다:\n" + text);
-            }).catch(err => { alert("복사에 실패했습니다."); });
+        function shareKakaoTalk(e) {
+            e.preventDefault();
+            const url = window.location.href.split('?')[0];
+            Kakao.Share.sendDefault({
+                objectType: 'feed',
+                content: {
+                    title: '백승상 🤍 김효진 결혼합니다.',
+                    description: '2026.10.31 토요일 오전 11:00\n수원 노블레스웨딩컨벤션 7층',
+                    imageUrl: url.substring(0, url.lastIndexOf('/')) + '/img/main.jpg',
+                    link: { mobileWebUrl: url, webUrl: url }
+                },
+                buttons: [{ title: '모바일 청첩장 보기', link: { mobileWebUrl: url, webUrl: url } }],
+                installTalk: true
+            });
         }
 
-        // 오디오 토글러
-        const audio = document.getElementById('bgm');
-        const bgmBtn = document.getElementById('bgmBtn');
+        function copyInvitationUrl() {
+            const currentUrl = window.location.href.split('?')[0]; 
+            navigator.clipboard.writeText(currentUrl).then(() => {
+                alert("💍 청첩장 주소가 복사되었습니다.\n원하는 대화방에 붙여넣기(Ctrl+V) 하세요!");
+            }).catch(err => {
+                const dummyInput = document.createElement("input");
+                document.body.appendChild(dummyInput);
+                dummyInput.value = currentUrl;
+                dummyInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(dummyInput);
+                alert("💍 청첩장 주소가 복사되었습니다.");
+            });
+        }
+
         function toggleBgm() {
-            if (audio.paused) { audio.play(); bgmBtn.innerText = "PAUSE"; } 
-            else { audio.pause(); bgmBtn.innerText = "PLAY"; }
+            const bgm = document.getElementById('bgm');
+            const btn = document.getElementById('bgmBtn');
+            if (bgm.paused) { bgm.play(); btn.innerText = "PAUSE"; }
+            else { bgm.pause(); btn.innerText = "PLAY"; }
         }
     </script>
 </body>
