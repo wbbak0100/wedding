@@ -532,15 +532,21 @@
             navigator.clipboard.writeText(num).then(() => alert("복사되었습니다."));
         }
 
-        function shareKakaoTalk(e) {
+function shareKakaoTalk(e) {
             e.preventDefault();
-            const url = window.location.href.split('?')[0];
+            
+            // 기존의 window.location.href 대신 원하시는 청첩장 실제 주소로 고정합니다.
+            const url = 'https://wbbak0100.github.io/wedding/invitation.html';
+            
+            // 이미지 주소도 깨지지 않도록 절대 경로로 명확하게 지정합니다.
+            const imageUrl = 'https://wbbak0100.github.io/wedding/img/main.jpg';
+
             Kakao.Share.sendDefault({
                 objectType: 'feed',
                 content: {
                     title: '백승상 🤍 김효진 결혼합니다.',
                     description: '2026.10.31 토요일 오전 11:00\n수원 노블레스웨딩컨벤션 7층',
-                    imageUrl: url.substring(0, url.lastIndexOf('/')) + '/img/main.jpg',
+                    imageUrl: imageUrl,
                     link: { mobileWebUrl: url, webUrl: url }
                 },
                 buttons: [{ title: '모바일 청첩장 보기', link: { mobileWebUrl: url, webUrl: url } }],
@@ -548,8 +554,9 @@
             });
         }
 
+        // 링크 주소 복사하기 버튼도 동일한 고정 주소를 복사하도록 함께 수정하시는 것을 추천합니다.
         function copyInvitationUrl() {
-            const currentUrl = window.location.href.split('?')[0]; 
+            const currentUrl = 'https://wbbak0100.github.io/wedding/invitation.html'; 
             navigator.clipboard.writeText(currentUrl).then(() => {
                 alert("💍 청첩장 주소가 복사되었습니다.\n원하는 대화방에 붙여넣기(Ctrl+V) 하세요!");
             }).catch(err => {
@@ -562,7 +569,7 @@
                 alert("💍 청첩장 주소가 복사되었습니다.");
             });
         }
-
+		
         function toggleBgm() {
             const bgm = document.getElementById('bgm');
             const btn = document.getElementById('bgmBtn');
