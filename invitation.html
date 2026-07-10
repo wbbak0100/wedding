@@ -31,16 +31,16 @@
             --border-main: #eaeaea;
             --border-sub: #f0f0f0;
             
-            /* [수정] 라이트 테마일 때 -> 달력은 '블랙' 상자에 '화이트' 글씨 */
-            --cal-bg: #1a1a1a;
-            --cal-border: #111111;
-            --cal-month: #ffffff;
-            --cal-text: #eeeeee;
+            /* [수정] 달력 정상 디자인 (화이트 박스 + 블랙 글씨) */
+            --cal-bg: #ffffff;
+            --cal-border: #eaeaea;
+            --cal-month: #222222;
+            --cal-text: #444444;
             --cal-header: #aaaaaa;
-            --cal-sun: #ff8b8b;
-            --cal-hlt-bg: #ffffff;
-            --cal-hlt-text: #111111;
-            --cal-hlt-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            --cal-sun: #d68787;
+            --cal-hlt-bg: #222222;
+            --cal-hlt-text: #ffffff;
+            --cal-hlt-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
             
             --timer-bg: #ffffff;
             --timer-border: #f0f0f0;
@@ -91,16 +91,16 @@
             --border-main: #333333;
             --border-sub: #333333;
             
-            /* [수정] 다크 테마일 때 -> 달력은 '화이트' 상자에 '블랙' 글씨 */
-            --cal-bg: #ffffff;
-            --cal-border: #eaeaea;
-            --cal-month: #111111;
-            --cal-text: #333333;
+            /* [수정] 달력 다크 디자인 (다크그레이 박스 + 화이트 글씨) */
+            --cal-bg: #1e1e1e;
+            --cal-border: #333333;
+            --cal-month: #eeeeee;
+            --cal-text: #cccccc;
             --cal-header: #888888;
             --cal-sun: #d68787;
-            --cal-hlt-bg: #111111;
-            --cal-hlt-text: #ffffff;
-            --cal-hlt-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            --cal-hlt-bg: #ffffff;
+            --cal-hlt-text: #111111;
+            --cal-hlt-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
             
             --timer-bg: #222222;
             --timer-border: #333333;
@@ -244,14 +244,14 @@
         .main-sec { padding-top: 90px; }
         .main-img { width: 100%; max-height: 500px; object-fit: cover; margin-bottom: 40px; }
 
-        /* 🌟 반전 달력 네모칸 스타일 적용 🌟 */
+        /* 달력 및 타이머 */
         .calendar-wrap { 
             margin: 30px auto 40px; 
             padding: 30px 20px; 
             border: 1px solid var(--cal-border); 
             border-radius: 12px; 
-            background-color: var(--cal-bg); /* 테마에 맞춰 반전된 배경색 호출 */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08); /* 달력 자체에 입체감 부여 */
+            background-color: var(--cal-bg);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); 
             max-width: 350px; 
         }
         
@@ -332,6 +332,7 @@
 </head>
 <body>
 
+    <!-- 커버 화면 (테마 선택 UI) -->
     <div id="intro-cover">
         <div class="intro-img-wrapper">
             <img src="img/Thumbnail.jpg" class="intro-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=1000';">
@@ -360,12 +361,14 @@
         </div>
     </div>
 
+    <!-- 배경음악 컨트롤 -->
     <div class="bgm-container" id="bgmWrapper">
         BGM: LANY - Out Of My League
         <audio id="bgm" src="LANY - Out Of My League.mp3" loop></audio>
         <button onclick="toggleBgm()" id="bgmBtn">PAUSE</button>
     </div>
 
+    <!-- 본문 내용 -->
     <div class="wrapper" id="mainWrapper">
         <div class="container">
             
@@ -518,7 +521,7 @@
 
                 <div class="summary-traffic">
                     <p><strong>🚘 주차 안내 —</strong> 본건물 및 주차타워 이용 가능 (주차요원 안내)</p>
-                    <p><strong>🚌 셔틀버스 —</strong> 수인분당선 수원시청역 5번출구 정시기준 30분 간격 운행</p>
+                    <p><strong>🚇 셔틀버스 —</strong> 수인분당선 수원시청역 5번출구 정시기준 30분 간격 운행</p>
                 </div>
 
                 <button class="account-trigger-btn" onclick="openMapModal()">📍 상세 대중교통 및 약도 안내 보기</button>
@@ -539,6 +542,7 @@
         </div>
     </div>
 
+    <!-- 계좌번호 팝업 모달 -->
     <div class="modal-overlay" id="accountModal" onclick="closeAccModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <h3 id="modalTitle" class="title-serif" style="font-size:14px; margin-bottom:20px; text-align:center;"></h3>
@@ -547,13 +551,14 @@
         </div>
     </div>
 
+    <!-- 상세 대중교통 안내 모달 -->
     <div class="modal-overlay" id="mapModal" onclick="closeMapModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <button style="position:absolute; top:-40px; right:0; background:none; border:none; color:#fff; font-size:30px; cursor:pointer;" onclick="closeMapModal()">✕</button>
             
             <h3 class="title-serif" style="font-size:16px; margin-bottom:15px; text-align:center; font-weight:600;">상세 교통 안내</h3>
             
-            <img src="img/traffic.jpg" style="width: 100%; height: auto; display: block; border-radius: 4px; margin-bottom: 20px;" onerror="this.style.display='none';" alt="약도 및 주차 안내">
+            <img src="img/traffic.png" style="width: 100%; height: auto; display: block; border-radius: 4px; margin-bottom: 20px;" onerror="this.style.display='none';" alt="약도 및 주차 안내">
             
             <div class="traffic-info">
                 <div class="traffic-title">🚇 지하철 및 셔틀버스</div>
@@ -585,6 +590,7 @@
         </div>
     </div>
 
+    <!-- 사진 확대 팝업 -->
     <div class="photo-popup-overlay" id="photoPopup" onclick="closePopup()">
         <div class="popup-image-wrapper" onclick="event.stopPropagation()">
             <button class="popup-close-btn" onclick="closePopup()">✕</button>
