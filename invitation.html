@@ -31,7 +31,7 @@
             --border-main: #eaeaea;
             --border-sub: #f0f0f0;
             
-            /* [수정] 달력 정상 디자인 (화이트 박스 + 블랙 글씨) */
+            /* 달력 정상 디자인 (화이트 박스 + 블랙 글씨) */
             --cal-bg: #ffffff;
             --cal-border: #eaeaea;
             --cal-month: #222222;
@@ -91,16 +91,16 @@
             --border-main: #333333;
             --border-sub: #333333;
             
-            /* [수정] 달력 다크 디자인 (다크그레이 박스 + 화이트 글씨) */
-            --cal-bg: #1e1e1e;
-            --cal-border: #333333;
-            --cal-month: #eeeeee;
-            --cal-text: #cccccc;
+            /* 다크 테마에서도 달력은 '화이트 박스 + 블랙 글씨' 로 유지 */
+            --cal-bg: #ffffff;
+            --cal-border: #eaeaea;
+            --cal-month: #111111;
+            --cal-text: #333333;
             --cal-header: #888888;
             --cal-sun: #d68787;
-            --cal-hlt-bg: #ffffff;
-            --cal-hlt-text: #111111;
-            --cal-hlt-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+            --cal-hlt-bg: #111111;
+            --cal-hlt-text: #ffffff;
+            --cal-hlt-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             
             --timer-bg: #222222;
             --timer-border: #333333;
@@ -244,6 +244,68 @@
         .main-sec { padding-top: 90px; }
         .main-img { width: 100%; max-height: 500px; object-fit: cover; margin-bottom: 40px; }
 
+        /* 🌟 [수정] 모서리가 겹치는 콜라주 스타일 사진 애니메이션 🌟 */
+        section.slide-photo-sec {
+            border-bottom: 1px solid var(--border-main);
+            overflow: hidden; 
+            padding: 50px 24px;
+            display: flex;
+            justify-content: center;
+            /* 이 구역은 전체가 덩어리째 위로 올라가는 대신 내부 요소들이 슬라이딩 되도록 처리 */
+            transform: none !important; 
+        }
+        .slide-img-wrap {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-img-collage {
+            width: 65%; /* 사진 크기를 화면의 65% 정도로 축소 */
+            height: auto;
+            border-radius: 8px; /* 모서리 둥글게 */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15); /* 입체감 그림자 */
+            /* 겹쳐질 때 사진끼리 구분이 잘 되도록 배경색과 동일한 두꺼운 테두리 적용 */
+            border: 4px solid var(--bg-container); 
+            opacity: 0;
+            position: relative;
+            /* 부드러운 이동과 회전을 위한 애니메이션 속성 */
+            transition: all 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* 1번 사진: 화면 왼쪽 밖에서 회전하며 대기 */
+        .slide-img-collage.pos1 {
+            align-self: flex-start;
+            z-index: 1;
+            transform: translateX(-100px) rotate(-10deg);
+        }
+        /* 2번 사진: 1번 사진과 겹치도록 마진을 위로 당기고, 오른쪽 밖에서 대기 */
+        .slide-img-collage.pos2 {
+            align-self: flex-end;
+            margin-top: -50px; /* 여기서 윗 사진과 겹칩니다 */
+            z-index: 2;
+            transform: translateX(100px) rotate(10deg);
+        }
+        /* 3번 사진: 2번 사진과 겹치도록 당기고, 왼쪽 밖에서 대기 */
+        .slide-img-collage.pos3 {
+            align-self: flex-start;
+            margin-top: -50px; /* 여기서 윗 사진과 겹칩니다 */
+            z-index: 3;
+            transform: translateX(-100px) rotate(-10deg);
+        }
+
+        /* 스크롤 시 화면에 등장하면 지정된 각도로 예쁘게 틀어지며 정착! */
+        section.is-visible .slide-img-collage.pos1 { opacity: 1; transform: translateX(0) rotate(-4deg); }
+        section.is-visible .slide-img-collage.pos2 { opacity: 1; transform: translateX(0) rotate(5deg); }
+        section.is-visible .slide-img-collage.pos3 { opacity: 1; transform: translateX(0) rotate(-3deg); }
+
+        /* 시간차 공격 (0.2초 간격으로 한장씩 착! 착! 착!) */
+        .slide-img-collage.pos1 { transition-delay: 0.1s; }
+        .slide-img-collage.pos2 { transition-delay: 0.3s; }
+        .slide-img-collage.pos3 { transition-delay: 0.5s; }
+
+
         /* 달력 및 타이머 */
         .calendar-wrap { 
             margin: 30px auto 40px; 
@@ -254,7 +316,6 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.05); 
             max-width: 350px; 
         }
-        
         .cal-month { font-family: 'Playfair Display', serif; font-size: 19px; margin-bottom: 25px; letter-spacing: 0.08em; color: var(--cal-month); font-style: italic; font-weight: 600; }
         .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px 0; font-size: 13px; color: var(--cal-text); }
         .cal-day-header { font-weight: 500; color: var(--cal-header); font-size: 11px; margin-bottom: 10px; letter-spacing: 0.05em; }
@@ -378,6 +439,16 @@
                 <img src="img/main.jpg" class="main-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=500';">
                 <p class="main-names title-serif">백승상 — 김효진</p>
                 <p style="margin-top:12px; font-size:13px; color:var(--text-muted);">노블레스웨딩컨벤션 7층 컨벤션홀</p>
+            </section>
+
+            <!-- 🌟 모서리가 겹치는(콜라주) 3장 슬라이드 애니메이션 섹션 🌟 -->
+            <section class="slide-photo-sec">
+                <div class="slide-img-wrap">
+                    <!-- 실제 사용 시 img/photo1.jpg 등으로 변경해서 쓰시면 됩니다! -->
+                    <img src="img/photo1.jpg" class="slide-img-collage pos1" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Photo+1'" alt="추가사진1">
+                    <img src="img/photo2.jpg" class="slide-img-collage pos2" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Photo+2'" alt="추가사진2">
+                    <img src="img/photo3.jpg" class="slide-img-collage pos3" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Photo+3'" alt="추가사진3">
+                </div>
             </section>
 
             <section>
