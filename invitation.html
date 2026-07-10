@@ -91,16 +91,16 @@
             --border-main: #333333;
             --border-sub: #333333;
             
-            /* 다크 테마에서도 달력은 '화이트 박스 + 블랙 글씨' 로 유지 */
-            --cal-bg: #ffffff;
-            --cal-border: #eaeaea;
-            --cal-month: #111111;
-            --cal-text: #333333;
+            /* 다크 테마 달력 디자인 (어두운 회색 박스 + 화이트 글자) */
+            --cal-bg: #222222;
+            --cal-border: #333333;
+            --cal-month: #ffffff;
+            --cal-text: #dddddd;
             --cal-header: #888888;
-            --cal-sun: #d68787;
-            --cal-hlt-bg: #111111;
-            --cal-hlt-text: #ffffff;
-            --cal-hlt-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            --cal-sun: #e59999;
+            --cal-hlt-bg: #ffffff;
+            --cal-hlt-text: #111111;
+            --cal-hlt-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
             
             --timer-bg: #222222;
             --timer-border: #333333;
@@ -244,11 +244,13 @@
         .main-sec { padding-top: 90px; }
         .main-img { width: 100%; max-height: 500px; object-fit: cover; margin-bottom: 40px; }
 
-        /* 🌟 [수정] 모서리가 겹치면서 옆에 커스텀 문구가 뜨는 콜라주 디자인 🌟 */
+        /* 모서리가 겹치는(콜라주) + 사진별 전용 문구 결합 섹션 */
         section.slide-photo-sec {
             border-bottom: 1px solid var(--border-main);
             overflow: hidden; 
-            padding: 60px 20px;
+            padding: 50px 24px;
+            display: flex;
+            justify-content: center;
             transform: none !important; 
         }
         .slide-img-wrap {
@@ -256,10 +258,9 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 20px; /* 줄 단위 간격 */
+            gap: 20px; 
         }
 
-        /* 한 줄(사진 + 문구) 레이아웃 */
         .collage-row {
             display: flex;
             align-items: center;
@@ -268,7 +269,6 @@
             transition: all 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* 사진 기본 설정 (글씨 공간을 확보하기 위해 폭을 52%로 세팅) */
         .slide-img-collage {
             width: 52%;
             height: auto;
@@ -278,7 +278,6 @@
             flex-shrink: 0;
         }
 
-        /* 텍스트 기본 설정 */
         .collage-text {
             width: 48%;
             padding: 0 15px;
@@ -288,20 +287,17 @@
             word-break: keep-all;
         }
 
-        /* 1번 라인 (사진 왼쪽 / 문구 오른쪽) */
         .collage-row.row1 {
             justify-content: flex-start;
             transform: translateX(-80px);
             text-align: left;
         }
-        /* 2번 라인 (문구 왼쪽 / 사진 오른쪽) - 마진을 위로 당겨 겹침 구현 */
         .collage-row.row2 {
             justify-content: flex-end;
             margin-top: -30px; 
             transform: translateX(80px);
             text-align: right;
         }
-        /* 3번 라인 (사진 왼쪽 / 문구 오른쪽) - 마진을 위로 당겨 겹침 구현 */
         .collage-row.row3 {
             justify-content: flex-start;
             margin-top: -30px; 
@@ -309,25 +305,21 @@
             text-align: left;
         }
 
-        /* 등장 애니메이션 발동 시 제자리로 정착하며 회전각 부여 */
         section.is-visible .collage-row { opacity: 1; transform: translateX(0); }
         section.is-visible .row1 .slide-img-collage { transform: rotate(-4deg); }
         section.is-visible .row2 .slide-img-collage { transform: rotate(5deg); }
         section.is-visible .row3 .slide-img-collage { transform: rotate(-3deg); }
 
-        /* 시간차 슬라이드 딜레이 */
         .collage-row.row1 { transition-delay: 0.1s; }
         .collage-row.row2 { transition-delay: 0.3s; }
         .collage-row.row3 { transition-delay: 0.5s; }
 
-        /* 특정 강조 텍스트 스타일 */
         .collage-text strong {
             display: block;
             font-size: 14px;
             color: var(--text-strong);
             margin-bottom: 2px;
         }
-
 
         /* 달력 및 타이머 */
         .calendar-wrap { 
@@ -336,7 +328,7 @@
             border: 1px solid var(--cal-border); 
             border-radius: 12px; 
             background-color: var(--cal-bg);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05); 
+            box-shadow: var(--cal-hlt-shadow); 
             max-width: 350px; 
         }
         .cal-month { font-family: 'Playfair Display', serif; font-size: 19px; margin-bottom: 25px; letter-spacing: 0.08em; color: var(--cal-month); font-style: italic; font-weight: 600; }
@@ -464,7 +456,7 @@
                 <p style="margin-top:12px; font-size:13px; color:var(--text-muted);">노블레스웨딩컨벤션 7층 컨벤션홀</p>
             </section>
 
-            <!-- 🌟 모서리가 겹치는(콜라주) + 사진별 전용 문구 결합 섹션 🌟 -->
+            <!-- 모서리가 겹치는(콜라주) + 사진별 전용 문구 결합 섹션 -->
             <section class="slide-photo-sec">
                 <div class="slide-img-wrap">
                     
@@ -585,47 +577,48 @@
                     <button class="gallery-nav-btn next" onclick="moveGallery('next')">›</button>
 
                     <div class="gallery-slider-container" id="galleryContainer" onscroll="updateGalleryDots()">
+                        <!-- 🌟 [수정] 20장 최적화 (4장씩 5그룹) 🌟 -->
+                        <!-- group 1 -->
                         <div class="gallery-page-block">
                             <img src="img/photo1.jpg" loading="lazy" onclick="openPopup(1)" onerror="this.src='https://placehold.co/300x400?text=1'">
                             <img src="img/photo2.jpg" loading="lazy" onclick="openPopup(2)" onerror="this.src='https://placehold.co/300x400?text=2'">
                             <img src="img/photo3.jpg" loading="lazy" onclick="openPopup(3)" onerror="this.src='https://placehold.co/300x400?text=3'">
                             <img src="img/photo4.jpg" loading="lazy" onclick="openPopup(4)" onerror="this.src='https://placehold.co/300x400?text=4'">
                         </div>
+                        <!-- group 2 -->
                         <div class="gallery-page-block">
                             <img src="img/photo5.jpg" loading="lazy" onclick="openPopup(5)" onerror="this.src='https://placehold.co/300x400?text=5'">
                             <img src="img/photo6.jpg" loading="lazy" onclick="openPopup(6)" onerror="this.src='https://placehold.co/300x400?text=6'">
                             <img src="img/photo7.jpg" loading="lazy" onclick="openPopup(7)" onerror="this.src='https://placehold.co/300x400?text=7'">
                             <img src="img/photo8.jpg" loading="lazy" onclick="openPopup(8)" onerror="this.src='https://placehold.co/300x400?text=8'">
                         </div>
+                        <!-- group 3 -->
                         <div class="gallery-page-block">
                             <img src="img/photo9.jpg" loading="lazy" onclick="openPopup(9)" onerror="this.src='https://placehold.co/300x400?text=9'">
                             <img src="img/photo10.jpg" loading="lazy" onclick="openPopup(10)" onerror="this.src='https://placehold.co/300x400?text=10'">
                             <img src="img/photo11.jpg" loading="lazy" onclick="openPopup(11)" onerror="this.src='https://placehold.co/300x400?text=11'">
                             <img src="img/photo12.jpg" loading="lazy" onclick="openPopup(12)" onerror="this.src='https://placehold.co/300x400?text=12'">
                         </div>
+                        <!-- group 4 -->
                         <div class="gallery-page-block">
                             <img src="img/photo13.jpg" loading="lazy" onclick="openPopup(13)" onerror="this.src='https://placehold.co/300x400?text=13'">
                             <img src="img/photo14.jpg" loading="lazy" onclick="openPopup(14)" onerror="this.src='https://placehold.co/300x400?text=14'">
                             <img src="img/photo15.jpg" loading="lazy" onclick="openPopup(15)" onerror="this.src='https://placehold.co/300x400?text=15'">
                             <img src="img/photo16.jpg" loading="lazy" onclick="openPopup(16)" onerror="this.src='https://placehold.co/300x400?text=16'">
                         </div>
+                        <!-- group 5 -->
                         <div class="gallery-page-block">
                             <img src="img/photo17.jpg" loading="lazy" onclick="openPopup(17)" onerror="this.src='https://placehold.co/300x400?text=17'">
                             <img src="img/photo18.jpg" loading="lazy" onclick="openPopup(18)" onerror="this.src='https://placehold.co/300x400?text=18'">
                             <img src="img/photo19.jpg" loading="lazy" onclick="openPopup(19)" onerror="this.src='https://placehold.co/300x400?text=19'">
                             <img src="img/photo20.jpg" loading="lazy" onclick="openPopup(20)" onerror="this.src='https://placehold.co/300x400?text=20'">
                         </div>
-                        <div class="gallery-page-block">
-                            <img src="img/photo21.jpg" loading="lazy" onclick="openPopup(21)" onerror="this.src='https://placehold.co/300x400?text=21'">
-                            <img src="img/photo22.jpg" loading="lazy" onclick="openPopup(22)" onerror="this.src='https://placehold.co/300x400?text=22'">
-                            <img src="img/photo23.jpg" loading="lazy" onclick="openPopup(23)" onerror="this.src='https://placehold.co/300x400?text=23'">
-                            <img src="img/photo24.jpg" loading="lazy" onclick="openPopup(24)" onerror="this.src='https://placehold.co/300x400?text=24'">
-                        </div>
                     </div>
                 </div>
 
                 <div class="gallery-dots">
-                    <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                    <!-- 20장에 맞게 점 5개로 세팅 -->
+                    <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
                 </div>
             </section>
 
@@ -692,7 +685,7 @@
                 <ul class="traffic-list">
                     <li><span class="traffic-highlight">수원역(4번출구) → 동수원병원 하차</span><br>10, 11-1, 37, 720-2, 83-1 (약 20분)</li>
                     <li><span class="traffic-highlight">수원종합버스터미널 → 수병원 하차</span><br>300, 300-1 (약 20분)</li>
-                    <li><span class="traffic-highlight">서수원시외버스터미널 → 동수원병원 하차</span><br>11-1, 61, 62-1 (약 30 fun)</li>
+                    <li><span class="traffic-highlight">서수원시외버스터미널 → 동수원병원 하차</span><br>11-1, 61, 62-1 (약 30분)</li>
                     <li><span class="traffic-highlight">망포역 (4번출구) → 동수원병원 하차</span><br>61, 62-1 (약 30분)</li>
                     <li><span class="traffic-highlight">용인시(용인대입구삼거리) → 동수원병원 하차</span><br>10, 10-5, 66 (약 1시간)</li>
                     <li><span class="traffic-highlight">범계역(범계사거리), 오산역(오산터미널맞은편) → 수병원 하차</span><br>300 (약 50분)</li>
@@ -705,7 +698,7 @@
                 <ul class="traffic-list">
                     <li><span class="traffic-highlight">주차장 안내</span><br>본건물(지하2F~지상3F) 및 주차타워(4층 건물) 이용<br><span style="color:var(--text-light);">※ 주차요원의 안내를 받으세요.</span></li>
                     <li><span class="traffic-highlight">내비게이션 검색</span><br>"수원노블레스웨딩컨벤션" 또는 "경기도 수원시 팔달구 우만동 549"</li>
-                    <li><span class="traffic-highlight">경부고속도로 이용 시</span><br>신갈 IC 진입 → 수원시내방면 직진 → 동수원사거리 우회전 → 100m 우측</li>
+                    <li><span class="traffic-highlight">경부고속도로 이용 시</span><br>신갈 IC 진입 → 수원시내방면 직진 → 동수원사거리 우회전 Tri 100m 우측</li>
                     <li><span class="traffic-highlight">영동고속도로 이용 시</span><br>동수원 IC 진입 → 수원시내방면 직진 → 창용문사거리 좌회전 → 800m 좌측</li>
                 </ul>
             </div>
@@ -842,8 +835,9 @@
             dots.forEach((d, i) => d.classList.toggle('active', i === idx));
         }
 
+        // 🌟 자바스크립트 최대 사진 개수 20개 설정 완료 🌟
         let currentImgIdx = 1;
-        const totalImgCount = 24;
+        const totalImgCount = 20;
 
         window.addEventListener('DOMContentLoaded', () => {
             createPetals(); 
