@@ -9,7 +9,7 @@
     <meta property="og:url" content="https://wbbak0100.github.io/wedding/invitation.html">
     <meta property="og:title" content="백승상 🤍 김효진 결혼합니다">
     <meta property="og:description" content="2026.10.31 토요일 오전 11:00 | 수원 노블레스웨딩컨벤션">
-    <meta property="og:image" content="https://wbbak0100.github.io/wedding/img/share_final.jpg">
+    <meta property="og:image" content="https://wbbak0100.github.io/wedding/img/share.jpg">
     <meta property="og:image:width" content="800">
     <meta property="og:image:height" content="420">
 
@@ -244,14 +244,11 @@
         .main-sec { padding-top: 90px; }
         .main-img { width: 100%; max-height: 500px; object-fit: cover; margin-bottom: 40px; }
 
-        /* 🌟 [수정] 모서리가 겹치는 콜라주 스타일 사진 애니메이션 🌟 */
+        /* 🌟 [수정] 모서리가 겹치면서 옆에 커스텀 문구가 뜨는 콜라주 디자인 🌟 */
         section.slide-photo-sec {
             border-bottom: 1px solid var(--border-main);
             overflow: hidden; 
-            padding: 50px 24px;
-            display: flex;
-            justify-content: center;
-            /* 이 구역은 전체가 덩어리째 위로 올라가는 대신 내부 요소들이 슬라이딩 되도록 처리 */
+            padding: 60px 20px;
             transform: none !important; 
         }
         .slide-img-wrap {
@@ -259,51 +256,77 @@
             width: 100%;
             display: flex;
             flex-direction: column;
+            gap: 20px; /* 줄 단위 간격 */
         }
 
-        .slide-img-collage {
-            width: 65%; /* 사진 크기를 화면의 65% 정도로 축소 */
-            height: auto;
-            border-radius: 8px; /* 모서리 둥글게 */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15); /* 입체감 그림자 */
-            /* 겹쳐질 때 사진끼리 구분이 잘 되도록 배경색과 동일한 두꺼운 테두리 적용 */
-            border: 4px solid var(--bg-container); 
+        /* 한 줄(사진 + 문구) 레이아웃 */
+        .collage-row {
+            display: flex;
+            align-items: center;
+            width: 100%;
             opacity: 0;
-            position: relative;
-            /* 부드러운 이동과 회전을 위한 애니메이션 속성 */
             transition: all 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* 1번 사진: 화면 왼쪽 밖에서 회전하며 대기 */
-        .slide-img-collage.pos1 {
-            align-self: flex-start;
-            z-index: 1;
-            transform: translateX(-100px) rotate(-10deg);
-        }
-        /* 2번 사진: 1번 사진과 겹치도록 마진을 위로 당기고, 오른쪽 밖에서 대기 */
-        .slide-img-collage.pos2 {
-            align-self: flex-end;
-            margin-top: -50px; /* 여기서 윗 사진과 겹칩니다 */
-            z-index: 2;
-            transform: translateX(100px) rotate(10deg);
-        }
-        /* 3번 사진: 2번 사진과 겹치도록 당기고, 왼쪽 밖에서 대기 */
-        .slide-img-collage.pos3 {
-            align-self: flex-start;
-            margin-top: -50px; /* 여기서 윗 사진과 겹칩니다 */
-            z-index: 3;
-            transform: translateX(-100px) rotate(-10deg);
+        /* 사진 기본 설정 (글씨 공간을 확보하기 위해 폭을 52%로 세팅) */
+        .slide-img-collage {
+            width: 52%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+            border: 4px solid var(--bg-container); 
+            flex-shrink: 0;
         }
 
-        /* 스크롤 시 화면에 등장하면 지정된 각도로 예쁘게 틀어지며 정착! */
-        section.is-visible .slide-img-collage.pos1 { opacity: 1; transform: translateX(0) rotate(-4deg); }
-        section.is-visible .slide-img-collage.pos2 { opacity: 1; transform: translateX(0) rotate(5deg); }
-        section.is-visible .slide-img-collage.pos3 { opacity: 1; transform: translateX(0) rotate(-3deg); }
+        /* 텍스트 기본 설정 */
+        .collage-text {
+            width: 48%;
+            padding: 0 15px;
+            font-size: 12px;
+            line-height: 1.7;
+            color: var(--text-base);
+            word-break: keep-all;
+        }
 
-        /* 시간차 공격 (0.2초 간격으로 한장씩 착! 착! 착!) */
-        .slide-img-collage.pos1 { transition-delay: 0.1s; }
-        .slide-img-collage.pos2 { transition-delay: 0.3s; }
-        .slide-img-collage.pos3 { transition-delay: 0.5s; }
+        /* 1번 라인 (사진 왼쪽 / 문구 오른쪽) */
+        .collage-row.row1 {
+            justify-content: flex-start;
+            transform: translateX(-80px);
+            text-align: left;
+        }
+        /* 2번 라인 (문구 왼쪽 / 사진 오른쪽) - 마진을 위로 당겨 겹침 구현 */
+        .collage-row.row2 {
+            justify-content: flex-end;
+            margin-top: -30px; 
+            transform: translateX(80px);
+            text-align: right;
+        }
+        /* 3번 라인 (사진 왼쪽 / 문구 오른쪽) - 마진을 위로 당겨 겹침 구현 */
+        .collage-row.row3 {
+            justify-content: flex-start;
+            margin-top: -30px; 
+            transform: translateX(-80px);
+            text-align: left;
+        }
+
+        /* 등장 애니메이션 발동 시 제자리로 정착하며 회전각 부여 */
+        section.is-visible .collage-row { opacity: 1; transform: translateX(0); }
+        section.is-visible .row1 .slide-img-collage { transform: rotate(-4deg); }
+        section.is-visible .row2 .slide-img-collage { transform: rotate(5deg); }
+        section.is-visible .row3 .slide-img-collage { transform: rotate(-3deg); }
+
+        /* 시간차 슬라이드 딜레이 */
+        .collage-row.row1 { transition-delay: 0.1s; }
+        .collage-row.row2 { transition-delay: 0.3s; }
+        .collage-row.row3 { transition-delay: 0.5s; }
+
+        /* 특정 강조 텍스트 스타일 */
+        .collage-text strong {
+            display: block;
+            font-size: 14px;
+            color: var(--text-strong);
+            margin-bottom: 2px;
+        }
 
 
         /* 달력 및 타이머 */
@@ -441,13 +464,37 @@
                 <p style="margin-top:12px; font-size:13px; color:var(--text-muted);">노블레스웨딩컨벤션 7층 컨벤션홀</p>
             </section>
 
-            <!-- 🌟 모서리가 겹치는(콜라주) 3장 슬라이드 애니메이션 섹션 🌟 -->
+            <!-- 🌟 모서리가 겹치는(콜라주) + 사진별 전용 문구 결합 섹션 🌟 -->
             <section class="slide-photo-sec">
                 <div class="slide-img-wrap">
-                    <!-- 실제 사용 시 img/photo1.jpg 등으로 변경해서 쓰시면 됩니다! -->
-                    <img src="img/photo1.jpg" class="slide-img-collage pos1" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Photo+1'" alt="추가사진1">
-                    <img src="img/photo2.jpg" class="slide-img-collage pos2" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Photo+2'" alt="추가사진2">
-                    <img src="img/photo3.jpg" class="slide-img-collage pos3" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Photo+3'" alt="추가사진3">
+                    
+                    <!-- 그룹 1: sub1.jpg (왼쪽 사진 / 오른쪽 초대 문구) -->
+                    <div class="collage-row row1">
+                        <img src="img/sub1.jpg" class="slide-img-collage" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Sub+1'" alt="추가사진1">
+                        <div class="collage-text">
+                            <strong>저희 결혼합니다🤍</strong>
+                            소중한 분들을 저희의 가장 행복한 날에 초대합니다.
+                        </div>
+                    </div>
+                    
+                    <!-- 그룹 2: sub2.jpg (왼쪽 신랑 문구 / 오른쪽 사진) -->
+                    <div class="collage-row row2">
+                        <div class="collage-text">
+                            백광현 · 심지나의 아들<br>
+                            <strong>신랑 백승상 <span style="font-size:11px; font-weight:normal; color:var(--text-light);">(29)</span></strong>
+                        </div>
+                        <img src="img/sub2.jpg" class="slide-img-collage" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Sub+2'" alt="추가사진2">
+                    </div>
+                    
+                    <!-- 그룹 3: sub3.jpg (왼쪽 사진 / 오른쪽 신부 문구) -->
+                    <div class="collage-row row3">
+                        <img src="img/sub3.jpg" class="slide-img-collage" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Sub+3'" alt="추가사진3">
+                        <div class="collage-text">
+                            김재중 · 오선영의 딸<br>
+                            <strong>신부 김효진 <span style="font-size:11px; font-weight:normal; color:var(--text-light);">(27)</span></strong>
+                        </div>
+                    </div>
+                    
                 </div>
             </section>
 
@@ -568,11 +615,17 @@
                             <img src="img/photo19.jpg" loading="lazy" onclick="openPopup(19)" onerror="this.src='https://placehold.co/300x400?text=19'">
                             <img src="img/photo20.jpg" loading="lazy" onclick="openPopup(20)" onerror="this.src='https://placehold.co/300x400?text=20'">
                         </div>
+                        <div class="gallery-page-block">
+                            <img src="img/photo21.jpg" loading="lazy" onclick="openPopup(21)" onerror="this.src='https://placehold.co/300x400?text=21'">
+                            <img src="img/photo22.jpg" loading="lazy" onclick="openPopup(22)" onerror="this.src='https://placehold.co/300x400?text=22'">
+                            <img src="img/photo23.jpg" loading="lazy" onclick="openPopup(23)" onerror="this.src='https://placehold.co/300x400?text=23'">
+                            <img src="img/photo24.jpg" loading="lazy" onclick="openPopup(24)" onerror="this.src='https://placehold.co/300x400?text=24'">
+                        </div>
                     </div>
                 </div>
 
                 <div class="gallery-dots">
-                    <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                    <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
                 </div>
             </section>
 
@@ -639,7 +692,7 @@
                 <ul class="traffic-list">
                     <li><span class="traffic-highlight">수원역(4번출구) → 동수원병원 하차</span><br>10, 11-1, 37, 720-2, 83-1 (약 20분)</li>
                     <li><span class="traffic-highlight">수원종합버스터미널 → 수병원 하차</span><br>300, 300-1 (약 20분)</li>
-                    <li><span class="traffic-highlight">서수원시외버스터미널 → 동수원병원 하차</span><br>11-1, 61, 62-1 (약 30분)</li>
+                    <li><span class="traffic-highlight">서수원시외버스터미널 → 동수원병원 하차</span><br>11-1, 61, 62-1 (약 30 fun)</li>
                     <li><span class="traffic-highlight">망포역 (4번출구) → 동수원병원 하차</span><br>61, 62-1 (약 30분)</li>
                     <li><span class="traffic-highlight">용인시(용인대입구삼거리) → 동수원병원 하차</span><br>10, 10-5, 66 (약 1시간)</li>
                     <li><span class="traffic-highlight">범계역(범계사거리), 오산역(오산터미널맞은편) → 수병원 하차</span><br>300 (약 50분)</li>
@@ -790,7 +843,7 @@
         }
 
         let currentImgIdx = 1;
-        const totalImgCount = 20;
+        const totalImgCount = 24;
 
         window.addEventListener('DOMContentLoaded', () => {
             createPetals(); 
@@ -889,7 +942,7 @@
         function shareKakaoTalk(e) {
             e.preventDefault();
             const url = 'https://wbbak0100.github.io/wedding/invitation.html';
-            const imageUrl = 'https://wbbak0100.github.io/wedding/img/share_final.jpg';
+            const imageUrl = 'https://wbbak0100.github.io/wedding/img/share.jpg';
 
             Kakao.Share.sendDefault({
                 objectType: 'feed',
