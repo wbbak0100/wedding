@@ -9,7 +9,7 @@
     <meta property="og:url" content="https://wbbak0100.github.io/wedding/invitation.html">
     <meta property="og:title" content="백승상 🤍 김효진 결혼합니다">
     <meta property="og:description" content="2026.10.31 토요일 오전 11:00 | 수원 노블레스웨딩컨벤션">
-    <meta property="og:image" content="https://wbbak0100.github.io/wedding/img/share.jpg">
+    <meta property="og:image" content="https://wbbak0100.github.io/wedding/img_w/share.jpg">
     <meta property="og:image:width" content="800">
     <meta property="og:image:height" content="420">
 
@@ -411,7 +411,7 @@
     <!-- 커버 화면 (테마 선택 UI) -->
     <div id="intro-cover">
         <div class="intro-img-wrapper">
-            <img src="img/Thumbnail.jpg" class="intro-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=1000';">
+            <img src="img_w/Thumbnail.jpg" id="introImg" class="intro-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=1000';">
             <div class="intro-overlay"></div>
             <div id="cherry-blossom-container"></div>
         </div>
@@ -439,8 +439,8 @@
 
     <!-- 배경음악 컨트롤 -->
     <div class="bgm-container" id="bgmWrapper">
-        BGM: LANY - Out Of My League
-        <audio id="bgm" src="LANY - Out Of My League.mp3" loop></audio>
+        <span id="bgmTitle">BGM</span>
+        <audio id="bgm" src="" loop></audio>
         <button onclick="toggleBgm()" id="bgmBtn">PAUSE</button>
     </div>
 
@@ -451,7 +451,7 @@
             <section class="main-sec">
                 <h1 class="title-serif" style="font-size:23px; margin-bottom:10px;">백승상 & 김효진</h1>
                 <p style="font-size:12px; color:var(--text-light); margin-bottom:40px; letter-spacing:0.15em;">2026. 10. 31. SAT. 11:00 AM</p>
-                <img src="img/main.jpg" class="main-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=500';">
+                <img src="img_w/main.jpg" id="mainImg" class="main-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=500';">
                 <p class="main-names title-serif">백승상 — 김효진</p>
                 <p style="margin-top:12px; font-size:13px; color:var(--text-muted);">노블레스웨딩컨벤션 7층 컨벤션홀</p>
             </section>
@@ -462,7 +462,7 @@
                     
                     <!-- 그룹 1: sub1.jpg (왼쪽 사진 / 오른쪽 초대 문구) -->
                     <div class="collage-row row1">
-                        <img src="img/sub1.jpg" class="slide-img-collage" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Sub+1'" alt="추가사진1">
+                        <img src="img_w/sub1.jpg" id="subImg1" class="slide-img-collage" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Sub+1'" alt="추가사진1">
                         <div class="collage-text">
                             <strong>저희 결혼합니다🤍</strong>
                             소중한 분들을 저희의 가장 행복한 날에 초대합니다.
@@ -475,12 +475,12 @@
                             백광현 · 심지나의 아들<br>
                             <strong>신랑 백승상 <span style="font-size:11px; font-weight:normal; color:var(--text-light);">(29)</span></strong>
                         </div>
-                        <img src="img/sub2.jpg" class="slide-img-collage" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Sub+2'" alt="추가사진2">
+                        <img src="img_w/sub2.jpg" id="subImg2" class="slide-img-collage" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Sub+2'" alt="추가사진2">
                     </div>
                     
                     <!-- 그룹 3: sub3.jpg (왼쪽 사진 / 오른쪽 신부 문구) -->
                     <div class="collage-row row3">
-                        <img src="img/sub3.jpg" class="slide-img-collage" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Sub+3'" alt="추가사진3">
+                        <img src="img_w/sub3.jpg" id="subImg3" class="slide-img-collage" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Sub+3'" alt="추가사진3">
                         <div class="collage-text">
                             김재중 · 오선영의 딸<br>
                             <strong>신부 김효진 <span style="font-size:11px; font-weight:normal; color:var(--text-light);">(27)</span></strong>
@@ -577,48 +577,53 @@
                     <button class="gallery-nav-btn next" onclick="moveGallery('next')">›</button>
 
                     <div class="gallery-slider-container" id="galleryContainer" onscroll="updateGalleryDots()">
-                        <!-- 🌟 [수정] 20장 최적화 (4장씩 5그룹) 🌟 -->
                         <!-- group 1 -->
                         <div class="gallery-page-block">
-                            <img src="img/photo1.jpg" loading="lazy" onclick="openPopup(1)" onerror="this.src='https://placehold.co/300x400?text=1'">
-                            <img src="img/photo2.jpg" loading="lazy" onclick="openPopup(2)" onerror="this.src='https://placehold.co/300x400?text=2'">
-                            <img src="img/photo3.jpg" loading="lazy" onclick="openPopup(3)" onerror="this.src='https://placehold.co/300x400?text=3'">
-                            <img src="img/photo4.jpg" loading="lazy" onclick="openPopup(4)" onerror="this.src='https://placehold.co/300x400?text=4'">
+                            <img src="img_w/photo1.jpg" class="gal-img" data-num="1" loading="lazy" onclick="openPopup(1)" onerror="this.src='https://placehold.co/300x400?text=1'">
+                            <img src="img_w/photo2.jpg" class="gal-img" data-num="2" loading="lazy" onclick="openPopup(2)" onerror="this.src='https://placehold.co/300x400?text=2'">
+                            <img src="img_w/photo3.jpg" class="gal-img" data-num="3" loading="lazy" onclick="openPopup(3)" onerror="this.src='https://placehold.co/300x400?text=3'">
+                            <img src="img_w/photo4.jpg" class="gal-img" data-num="4" loading="lazy" onclick="openPopup(4)" onerror="this.src='https://placehold.co/300x400?text=4'">
                         </div>
                         <!-- group 2 -->
                         <div class="gallery-page-block">
-                            <img src="img/photo5.jpg" loading="lazy" onclick="openPopup(5)" onerror="this.src='https://placehold.co/300x400?text=5'">
-                            <img src="img/photo6.jpg" loading="lazy" onclick="openPopup(6)" onerror="this.src='https://placehold.co/300x400?text=6'">
-                            <img src="img/photo7.jpg" loading="lazy" onclick="openPopup(7)" onerror="this.src='https://placehold.co/300x400?text=7'">
-                            <img src="img/photo8.jpg" loading="lazy" onclick="openPopup(8)" onerror="this.src='https://placehold.co/300x400?text=8'">
+                            <img src="img_w/photo5.jpg" class="gal-img" data-num="5" loading="lazy" onclick="openPopup(5)" onerror="this.src='https://placehold.co/300x400?text=5'">
+                            <img src="img_w/photo6.jpg" class="gal-img" data-num="6" loading="lazy" onclick="openPopup(6)" onerror="this.src='https://placehold.co/300x400?text=6'">
+                            <img src="img_w/photo7.jpg" class="gal-img" data-num="7" loading="lazy" onclick="openPopup(7)" onerror="this.src='https://placehold.co/300x400?text=7'">
+                            <img src="img_w/photo8.jpg" class="gal-img" data-num="8" loading="lazy" onclick="openPopup(8)" onerror="this.src='https://placehold.co/300x400?text=8'">
                         </div>
                         <!-- group 3 -->
                         <div class="gallery-page-block">
-                            <img src="img/photo9.jpg" loading="lazy" onclick="openPopup(9)" onerror="this.src='https://placehold.co/300x400?text=9'">
-                            <img src="img/photo10.jpg" loading="lazy" onclick="openPopup(10)" onerror="this.src='https://placehold.co/300x400?text=10'">
-                            <img src="img/photo11.jpg" loading="lazy" onclick="openPopup(11)" onerror="this.src='https://placehold.co/300x400?text=11'">
-                            <img src="img/photo12.jpg" loading="lazy" onclick="openPopup(12)" onerror="this.src='https://placehold.co/300x400?text=12'">
+                            <img src="img_w/photo9.jpg" class="gal-img" data-num="9" loading="lazy" onclick="openPopup(9)" onerror="this.src='https://placehold.co/300x400?text=9'">
+                            <img src="img_w/photo10.jpg" class="gal-img" data-num="10" loading="lazy" onclick="openPopup(10)" onerror="this.src='https://placehold.co/300x400?text=10'">
+                            <img src="img_w/photo11.jpg" class="gal-img" data-num="11" loading="lazy" onclick="openPopup(11)" onerror="this.src='https://placehold.co/300x400?text=11'">
+                            <img src="img_w/photo12.jpg" class="gal-img" data-num="12" loading="lazy" onclick="openPopup(12)" onerror="this.src='https://placehold.co/300x400?text=12'">
                         </div>
                         <!-- group 4 -->
                         <div class="gallery-page-block">
-                            <img src="img/photo13.jpg" loading="lazy" onclick="openPopup(13)" onerror="this.src='https://placehold.co/300x400?text=13'">
-                            <img src="img/photo14.jpg" loading="lazy" onclick="openPopup(14)" onerror="this.src='https://placehold.co/300x400?text=14'">
-                            <img src="img/photo15.jpg" loading="lazy" onclick="openPopup(15)" onerror="this.src='https://placehold.co/300x400?text=15'">
-                            <img src="img/photo16.jpg" loading="lazy" onclick="openPopup(16)" onerror="this.src='https://placehold.co/300x400?text=16'">
+                            <img src="img_w/photo13.jpg" class="gal-img" data-num="13" loading="lazy" onclick="openPopup(13)" onerror="this.src='https://placehold.co/300x400?text=13'">
+                            <img src="img_w/photo14.jpg" class="gal-img" data-num="14" loading="lazy" onclick="openPopup(14)" onerror="this.src='https://placehold.co/300x400?text=14'">
+                            <img src="img_w/photo15.jpg" class="gal-img" data-num="15" loading="lazy" onclick="openPopup(15)" onerror="this.src='https://placehold.co/300x400?text=15'">
+                            <img src="img_w/photo16.jpg" class="gal-img" data-num="16" loading="lazy" onclick="openPopup(16)" onerror="this.src='https://placehold.co/300x400?text=16'">
                         </div>
                         <!-- group 5 -->
                         <div class="gallery-page-block">
-                            <img src="img/photo17.jpg" loading="lazy" onclick="openPopup(17)" onerror="this.src='https://placehold.co/300x400?text=17'">
-                            <img src="img/photo18.jpg" loading="lazy" onclick="openPopup(18)" onerror="this.src='https://placehold.co/300x400?text=18'">
-                            <img src="img/photo19.jpg" loading="lazy" onclick="openPopup(19)" onerror="this.src='https://placehold.co/300x400?text=19'">
-                            <img src="img/photo20.jpg" loading="lazy" onclick="openPopup(20)" onerror="this.src='https://placehold.co/300x400?text=20'">
+                            <img src="img_w/photo17.jpg" class="gal-img" data-num="17" loading="lazy" onclick="openPopup(17)" onerror="this.src='https://placehold.co/300x400?text=17'">
+                            <img src="img_w/photo18.jpg" class="gal-img" data-num="18" loading="lazy" onclick="openPopup(18)" onerror="this.src='https://placehold.co/300x400?text=18'">
+                            <img src="img_w/photo19.jpg" class="gal-img" data-num="19" loading="lazy" onclick="openPopup(19)" onerror="this.src='https://placehold.co/300x400?text=19'">
+                            <img src="img_w/photo20.jpg" class="gal-img" data-num="20" loading="lazy" onclick="openPopup(20)" onerror="this.src='https://placehold.co/300x400?text=20'">
+                        </div>
+                        <!-- group 6 (하얀색일 때만 표시, 검은색일 때는 숨김) -->
+                        <div class="gallery-page-block" id="galGroup6">
+                            <img src="img_w/photo21.jpg" class="gal-img" data-num="21" loading="lazy" onclick="openPopup(21)" onerror="this.src='https://placehold.co/300x400?text=21'">
+                            <img src="img_w/photo22.jpg" class="gal-img" data-num="22" loading="lazy" onclick="openPopup(22)" onerror="this.src='https://placehold.co/300x400?text=22'">
+                            <img src="img_w/photo23.jpg" class="gal-img" data-num="23" loading="lazy" onclick="openPopup(23)" onerror="this.src='https://placehold.co/300x400?text=23'">
+                            <img src="img_w/photo24.jpg" class="gal-img" data-num="24" loading="lazy" onclick="openPopup(24)" onerror="this.src='https://placehold.co/300x400?text=24'">
                         </div>
                     </div>
                 </div>
 
                 <div class="gallery-dots">
-                    <!-- 20장에 맞게 점 5개로 세팅 -->
-                    <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                    <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot" id="dot6"></span>
                 </div>
             </section>
 
@@ -633,8 +638,6 @@
                     <a href="https://naver.me/57VZk9UM" target="_blank" class="navi-btn">NAVER MAP</a>
                     <a href="https://map.kakao.com/link/to/노블레스웨딩컨벤션,37.281555,127.030294" target="_blank" class="navi-btn">KAKAO MAP</a>
                 </div>
-
-                <img src="img/traffic.png" class="traffic-guide-img" loading="lazy" onerror="this.style.display='none';" alt="교통 및 주차 안내 약도">
 
                 <div class="summary-traffic">
                     <p><strong>🚘 주차 안내 —</strong> 본건물 및 주차타워 이용 가능 (주차요원 안내)</p>
@@ -675,7 +678,7 @@
             
             <h3 class="title-serif" style="font-size:16px; margin-bottom:15px; text-align:center; font-weight:600;">상세 교통 안내</h3>
             
-            <img src="img/traffic.png" style="width: 100%; height: auto; display: block; border-radius: 4px; margin-bottom: 20px;" onerror="this.style.display='none';" alt="약도 및 주차 안내">
+            <img src="img_w/traffic.jpg" id="modalTrafficImg" style="width: 100%; height: auto; display: block; border-radius: 4px; margin-bottom: 20px;" onerror="this.style.display='none';" alt="약도 및 주차 안내">
             
             <div class="traffic-info">
                 <div class="traffic-title">🚇 지하철 및 셔틀버스</div>
@@ -698,7 +701,7 @@
                 <ul class="traffic-list">
                     <li><span class="traffic-highlight">주차장 안내</span><br>본건물(지하2F~지상3F) 및 주차타워(4층 건물) 이용<br><span style="color:var(--text-light);">※ 주차요원의 안내를 받으세요.</span></li>
                     <li><span class="traffic-highlight">내비게이션 검색</span><br>"수원노블레스웨딩컨벤션" 또는 "경기도 수원시 팔달구 우만동 549"</li>
-                    <li><span class="traffic-highlight">경부고속도로 이용 시</span><br>신갈 IC 진입 → 수원시내방면 직진 → 동수원사거리 우회전 Tri 100m 우측</li>
+                    <li><span class="traffic-highlight">경부고속도로 이용 시</span><br>신갈 IC 진입 → 수원시내방면 직진 → 동수원사거리 우회전 → 100m 우측</li>
                     <li><span class="traffic-highlight">영동고속도로 이용 시</span><br>동수원 IC 진입 → 수원시내방면 직진 → 창용문사거리 좌회전 → 800m 좌측</li>
                 </ul>
             </div>
@@ -725,6 +728,11 @@
             try { if (typeof Kakao !== 'undefined') Kakao.init('80c60a31a6631756bbf915ed70ed3e47'); } catch (e) {}
         })();
 
+        // 기본 변수 선언
+        let imgFolder = 'img_w';
+        let totalImgCount = 24;
+        let currentImgIdx = 1;
+
         // 스크롤 애니메이션 옵저버
         function initScrollAnimation() {
             const sections = document.querySelectorAll('section');
@@ -740,14 +748,53 @@
             sections.forEach(section => observer.observe(section));
         }
 
-        // 테마 선택 시 실행
+        // 테마 선택 시 실행 (이미지 폴더, BGM, 갤러리 개수 동적 처리)
         function selectThemeAndOpen(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             document.getElementById('intro-cover').classList.add('hide');
             
+            const bgmAudio = document.getElementById('bgm');
+            const bgmTitle = document.getElementById('bgmTitle');
+            const galGroup6 = document.getElementById('galGroup6');
+            const dot6 = document.getElementById('dot6');
+
+            if (theme === 'light') {
+                imgFolder = 'img_w';
+                totalImgCount = 24; // 🌟 하얀색: 24장
+                bgmAudio.src = '하나님의 사랑이(ver.피아노).mp3';
+                bgmTitle.innerText = 'BGM: 하나님의 사랑이(ver.피아노)';
+                if (galGroup6) galGroup6.style.display = 'grid';
+                if (dot6) dot6.style.display = 'inline-block';
+            } else {
+                imgFolder = 'img_b';
+                totalImgCount = 20; // 🌟 검은색: 20장
+                bgmAudio.src = 'LANY - Out Of My League.mp3';
+                bgmTitle.innerText = 'BGM: LANY - Out Of My League';
+                if (galGroup6) galGroup6.style.display = 'none';
+                if (dot6) dot6.style.display = 'none';
+            }
+
+            // 주요 이미지 경로 변경
+            document.getElementById('introImg').src = imgFolder + '/Thumbnail.jpg';
+            document.getElementById('mainImg').src = imgFolder + '/main.jpg';
+            document.getElementById('subImg1').src = imgFolder + '/sub1.jpg';
+            document.getElementById('subImg2').src = imgFolder + '/sub2.jpg';
+            document.getElementById('subImg3').src = imgFolder + '/sub3.jpg';
+            document.getElementById('modalTrafficImg').src = imgFolder + '/traffic.jpg';
+
+            // 갤러리 이미지 경로 변경
+            const galImgs = document.querySelectorAll('.gal-img');
+            galImgs.forEach(img => {
+                const num = img.getAttribute('data-num');
+                img.src = imgFolder + '/photo' + num + '.jpg';
+            });
+
+            // 팝업 미니 썸네일 재구성 (totalImgCount에 맞춰 20개 또는 24개 생성)
+            renderPopupThumbs();
+
             document.getElementById('mainWrapper').classList.add('show');
             document.getElementById('bgmWrapper').style.display = 'block';
-            document.getElementById('bgm').play().catch(()=>{});
+            bgmAudio.play().catch(()=>{});
             
             initScrollAnimation();
             
@@ -835,20 +882,19 @@
             dots.forEach((d, i) => d.classList.toggle('active', i === idx));
         }
 
-        // 🌟 자바스크립트 최대 사진 개수 20개 설정 완료 🌟
-        let currentImgIdx = 1;
-        const totalImgCount = 20;
+        function renderPopupThumbs() {
+            const thumbContainer = document.getElementById('popupThumbContainer');
+            let thumbHtml = '';
+            for (let i = 1; i <= totalImgCount; i++) {
+                thumbHtml += `<img src="${imgFolder}/photo${i}.jpg" class="popup-thumb-img" id="pThumb${i}" onclick="jumpToPopupPhoto(${i})" onerror="this.src='https://placehold.co/45x60?text=${i}'">`;
+            }
+            thumbContainer.innerHTML = thumbHtml;
+        }
 
         window.addEventListener('DOMContentLoaded', () => {
             createPetals(); 
             initTimer(); 
-
-            const thumbContainer = document.getElementById('popupThumbContainer');
-            let thumbHtml = '';
-            for (let i = 1; i <= totalImgCount; i++) {
-                thumbHtml += `<img src="img/photo${i}.jpg" class="popup-thumb-img" id="pThumb${i}" onclick="jumpToPopupPhoto(${i})" onerror="this.src='https://placehold.co/45x60?text=${i}'">`;
-            }
-            thumbContainer.innerHTML = thumbHtml;
+            renderPopupThumbs();
         });
 
         function openPopup(idx) {
@@ -872,7 +918,7 @@
         }
 
         function updatePopupImg() {
-            document.getElementById('popupImg').src = 'img/photo' + currentImgIdx + '.jpg';
+            document.getElementById('popupImg').src = imgFolder + '/photo' + currentImgIdx + '.jpg';
             
             const allThumbs = document.querySelectorAll('.popup-thumb-img');
             allThumbs.forEach((thumb, index) => {
@@ -897,13 +943,13 @@
         const accData = {
             groom: { title: "신랑측 마음 전하실 곳", list: [
                 {name:"백승상", bank:"우리은행", num:"10024307636729"},
-                {name:"백광현(부)", bank:"신한은행", num:"110-123-456789"},
-                {name:"심지나(모)", bank:"국민은행", num:"345601-04-123456"}
+                {name:"백광현(부)", bank:"국민은행", num:"242240127761"},
+                {name:"심지나(모)", bank:"국민은행", num:"27250204011445"}
             ]},
             bride: { title: "신부측 마음 전하실 곳", list: [
-                {name:"김효진", bank:"국민은행", num:"12345678901234"},
-                {name:"김재중(부)", bank:"기업은행", num:"010-9445-9806-11"},
-                {name:"오선영(모)", bank:"농협은행", num:"302-1234-5678-91"}
+                {name:"김효진", bank:"카카오뱅크", num:"3333091871155"},
+                {name:"김재중(부)", bank:"SC제일", num:"64220010623"},
+                {name:"오선영(모)", bank:"새마을금고", num:"9003253853589"}
             ]}
         };
 
@@ -936,7 +982,7 @@
         function shareKakaoTalk(e) {
             e.preventDefault();
             const url = 'https://wbbak0100.github.io/wedding/invitation.html';
-            const imageUrl = 'https://wbbak0100.github.io/wedding/img/share.jpg';
+            const imageUrl = 'https://wbbak0100.github.io/wedding/' + imgFolder + '/share.jpg';
 
             Kakao.Share.sendDefault({
                 objectType: 'feed',
