@@ -20,7 +20,6 @@
     <style>
         /* 🌟 테마 색상 변수 설정 🌟 */
         :root {
-            /* 라이트 테마 (기본) - 배경: 흰색 계열 */
             --bg-body: #f7f7f7;
             --bg-container: #ffffff;
             --text-base: #4a4a4a;
@@ -31,7 +30,6 @@
             --border-main: #eaeaea;
             --border-sub: #f0f0f0;
             
-            /* 달력 정상 디자인 (화이트 박스 + 블랙 글씨) */
             --cal-bg: #ffffff;
             --cal-border: #eaeaea;
             --cal-month: #222222;
@@ -91,7 +89,6 @@
             --border-main: #333333;
             --border-sub: #333333;
             
-            /* 다크 테마 달력 디자인 (어두운 회색 박스 + 화이트 글자) */
             --cal-bg: #222222;
             --cal-border: #333333;
             --cal-month: #ffffff;
@@ -241,84 +238,18 @@
         .bgm-container { position: fixed; top: 20px; right: 20px; z-index: 1000; background: var(--bgm-bg); backdrop-filter: blur(5px); padding: 5px 12px; font-size: 10px; border: 1px solid var(--border-main); color: var(--bgm-text); display: none; border-radius: 4px; }
         .bgm-container button { border:none; background:none; cursor:pointer; color: var(--bgm-text); margin-left:5px; font-weight: bold; }
 
-        .main-sec { padding-top: 90px; }
-        .main-img { width: 100%; max-height: 500px; object-fit: cover; margin-bottom: 40px; }
-
-        /* 모서리가 겹치는(콜라주) + 사진별 전용 문구 결합 섹션 */
-        section.slide-photo-sec {
-            border-bottom: 1px solid var(--border-main);
-            overflow: hidden; 
-            padding: 50px 24px;
-            display: flex;
-            justify-content: center;
-            transform: none !important; 
-        }
-        .slide-img-wrap {
-            position: relative;
+        /* 🌟 커스텀 이미지를 꽉 채우는 전용 섹션 🌟 */
+        section.full-img-sec {
+            padding: 0 !important;
+            border-bottom: none !important;
             width: 100%;
             display: flex;
-            flex-direction: column;
-            gap: 20px; 
         }
-
-        .collage-row {
-            display: flex;
-            align-items: center;
+        .full-width-img {
             width: 100%;
-            opacity: 0;
-            transition: all 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        .slide-img-collage {
-            width: 52%;
             height: auto;
-            border-radius: 8px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
-            border: 4px solid var(--bg-container); 
-            flex-shrink: 0;
-        }
-
-        .collage-text {
-            width: 48%;
-            padding: 0 15px;
-            font-size: 12px;
-            line-height: 1.7;
-            color: var(--text-base);
-            word-break: keep-all;
-        }
-
-        .collage-row.row1 {
-            justify-content: flex-start;
-            transform: translateX(-80px);
-            text-align: left;
-        }
-        .collage-row.row2 {
-            justify-content: flex-end;
-            margin-top: -30px; 
-            transform: translateX(80px);
-            text-align: right;
-        }
-        .collage-row.row3 {
-            justify-content: flex-start;
-            margin-top: -30px; 
-            transform: translateX(-80px);
-            text-align: left;
-        }
-
-        section.is-visible .collage-row { opacity: 1; transform: translateX(0); }
-        section.is-visible .row1 .slide-img-collage { transform: rotate(-4deg); }
-        section.is-visible .row2 .slide-img-collage { transform: rotate(5deg); }
-        section.is-visible .row3 .slide-img-collage { transform: rotate(-3deg); }
-
-        .collage-row.row1 { transition-delay: 0.1s; }
-        .collage-row.row2 { transition-delay: 0.3s; }
-        .collage-row.row3 { transition-delay: 0.5s; }
-
-        .collage-text strong {
+            object-fit: cover;
             display: block;
-            font-size: 14px;
-            color: var(--text-strong);
-            margin-bottom: 2px;
         }
 
         /* 달력 및 타이머 */
@@ -448,48 +379,33 @@
     <div class="wrapper" id="mainWrapper">
         <div class="container">
             
-            <section class="main-sec">
-                <h1 class="title-serif" style="font-size:23px; margin-bottom:10px;">백승상 & 김효진</h1>
-                <p style="font-size:12px; color:var(--text-light); margin-bottom:40px; letter-spacing:0.15em;">2026. 10. 31. SAT. 11:00 AM</p>
-                <img src="img_w/main.jpg" id="mainImg" class="main-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=500';">
-                <p class="main-names title-serif">백승상 — 김효진</p>
-                <p style="margin-top:12px; font-size:13px; color:var(--text-muted);">노블레스웨딩컨벤션 7층 컨벤션홀</p>
+            <!-- 🌟 풀 사이즈 커스텀 메인 이미지 8장 연속 배치 🌟 -->
+            <section class="full-img-sec">
+                <img src="img_w/main1.jpg" id="mainImg1" class="full-width-img" loading="lazy" onerror="this.src='https://placehold.co/450x800?text=Main+1'">
+            </section>
+            <section class="full-img-sec">
+                <img src="img_w/main2.jpg" id="mainImg2" class="full-width-img" loading="lazy" onerror="this.src='https://placehold.co/450x800?text=Main+2'">
+            </section>
+            <section class="full-img-sec">
+                <img src="img_w/main3.jpg" id="mainImg3" class="full-width-img" loading="lazy" onerror="this.src='https://placehold.co/450x800?text=Main+3'">
+            </section>
+            <section class="full-img-sec">
+                <img src="img_w/main4.jpg" id="mainImg4" class="full-width-img" loading="lazy" onerror="this.src='https://placehold.co/450x800?text=Main+4'">
+            </section>
+            <section class="full-img-sec">
+                <img src="img_w/main5.jpg" id="mainImg5" class="full-width-img" loading="lazy" onerror="this.src='https://placehold.co/450x800?text=Main+5'">
+            </section>
+            <section class="full-img-sec">
+                <img src="img_w/main6.jpg" id="mainImg6" class="full-width-img" loading="lazy" onerror="this.src='https://placehold.co/450x800?text=Main+6'">
+            </section>
+            <section class="full-img-sec">
+                <img src="img_w/main7.jpg" id="mainImg7" class="full-width-img" loading="lazy" onerror="this.src='https://placehold.co/450x800?text=Main+7'">
+            </section>
+            <section class="full-img-sec">
+                <img src="img_w/main8.jpg" id="mainImg8" class="full-width-img" loading="lazy" onerror="this.src='https://placehold.co/450x800?text=Main+8'">
             </section>
 
-            <!-- 모서리가 겹치는(콜라주) + 사진별 전용 문구 결합 섹션 -->
-            <section class="slide-photo-sec">
-                <div class="slide-img-wrap">
-                    
-                    <!-- 그룹 1: sub1.jpg (왼쪽 사진 / 오른쪽 초대 문구) -->
-                    <div class="collage-row row1">
-                        <img src="img_w/sub1.jpg" id="subImg1" class="slide-img-collage" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Sub+1'" alt="추가사진1">
-                        <div class="collage-text">
-                            <strong>저희 결혼합니다🤍</strong>
-                            소중한 분들을 저희의 가장 행복한 날에 초대합니다.
-                        </div>
-                    </div>
-                    
-                    <!-- 그룹 2: sub2.jpg (왼쪽 신랑 문구 / 오른쪽 사진) -->
-                    <div class="collage-row row2">
-                        <div class="collage-text">
-                            백광현 · 심지나의 아들<br>
-                            <strong>신랑 백승상 <span style="font-size:11px; font-weight:normal; color:var(--text-light);">(29)</span></strong>
-                        </div>
-                        <img src="img_w/sub2.jpg" id="subImg2" class="slide-img-collage" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Sub+2'" alt="추가사진2">
-                    </div>
-                    
-                    <!-- 그룹 3: sub3.jpg (왼쪽 사진 / 오른쪽 신부 문구) -->
-                    <div class="collage-row row3">
-                        <img src="img_w/sub3.jpg" id="subImg3" class="slide-img-collage" loading="lazy" onerror="this.src='https://placehold.co/400x550?text=Sub+3'" alt="추가사진3">
-                        <div class="collage-text">
-                            김재중 · 오선영의 딸<br>
-                            <strong>신부 김효진 <span style="font-size:11px; font-weight:normal; color:var(--text-light);">(27)</span></strong>
-                        </div>
-                    </div>
-                    
-                </div>
-            </section>
-
+            <!-- 초대글 -->
             <section>
                 <h2 class="title-serif" style="margin-bottom:35px; font-size:17px; color:var(--text-muted);">INVITATION</h2>
                 <p style="font-size:13px; color:var(--text-base); line-height:2.2;">
@@ -506,6 +422,7 @@
                 </div>
             </section>
 
+            <!-- 달력 및 타이머 -->
             <section>
                 <h2 class="title-serif" style="margin-bottom:10px; font-size:16px; color:var(--text-muted);">SAVE THE DATE</h2>
                 
@@ -568,6 +485,7 @@
                 </div>
             </section>
 
+            <!-- 🌟 16장 최적화 갤러리 섹션 🌟 -->
             <section id="gallery-section">
                 <h2 class="title-serif" style="margin-bottom:10px; font-size:16px; color:var(--text-muted);">MOMENTS</h2>
                 <p style="font-size:11px; color:var(--text-light); margin-bottom:20px;">화살표를 누르거나 옆으로 밀어서 사진을 감상해 보세요</p>
@@ -605,31 +523,18 @@
                             <img src="img_w/photo15.jpg" class="gal-img" data-num="15" loading="lazy" onclick="openPopup(15)" onerror="this.src='https://placehold.co/300x400?text=15'">
                             <img src="img_w/photo16.jpg" class="gal-img" data-num="16" loading="lazy" onclick="openPopup(16)" onerror="this.src='https://placehold.co/300x400?text=16'">
                         </div>
-                        <!-- group 5 -->
-                        <div class="gallery-page-block">
-                            <img src="img_w/photo17.jpg" class="gal-img" data-num="17" loading="lazy" onclick="openPopup(17)" onerror="this.src='https://placehold.co/300x400?text=17'">
-                            <img src="img_w/photo18.jpg" class="gal-img" data-num="18" loading="lazy" onclick="openPopup(18)" onerror="this.src='https://placehold.co/300x400?text=18'">
-                            <img src="img_w/photo19.jpg" class="gal-img" data-num="19" loading="lazy" onclick="openPopup(19)" onerror="this.src='https://placehold.co/300x400?text=19'">
-                            <img src="img_w/photo20.jpg" class="gal-img" data-num="20" loading="lazy" onclick="openPopup(20)" onerror="this.src='https://placehold.co/300x400?text=20'">
-                        </div>
-                        <!-- group 6 (하얀색일 때만 표시, 검은색일 때는 숨김) -->
-                        <div class="gallery-page-block" id="galGroup6">
-                            <img src="img_w/photo21.jpg" class="gal-img" data-num="21" loading="lazy" onclick="openPopup(21)" onerror="this.src='https://placehold.co/300x400?text=21'">
-                            <img src="img_w/photo22.jpg" class="gal-img" data-num="22" loading="lazy" onclick="openPopup(22)" onerror="this.src='https://placehold.co/300x400?text=22'">
-                            <img src="img_w/photo23.jpg" class="gal-img" data-num="23" loading="lazy" onclick="openPopup(23)" onerror="this.src='https://placehold.co/300x400?text=23'">
-                            <img src="img_w/photo24.jpg" class="gal-img" data-num="24" loading="lazy" onclick="openPopup(24)" onerror="this.src='https://placehold.co/300x400?text=24'">
-                        </div>
                     </div>
                 </div>
 
                 <div class="gallery-dots">
-                    <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot" id="dot6"></span>
+                    <!-- 16장이므로 점 4개 -->
+                    <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
                 </div>
             </section>
 
             <section>
-                <h2 class="title-serif" style="font-size:16px; margin-bottom:25px; color:var(--text-muted);">LOCATION</h2>
-                <p style="font-size:15px; color:var(--text-strong);">노블레스웨딩컨벤션 7층 컨벤션홀</p>
+                <h2 class="title-serif" style="margin-bottom:25px; font-size:16px; color:var(--text-muted);">LOCATION</h2>
+                <p style="font-size:15px; color:var(--text-strong);">수원 노블레스웨딩컨벤션 7층 컨벤션홀</p>
                 <p style="font-size:12px; color:var(--text-light);">경기 수원시 팔달구 팔달문로 128</p>
                 
                 <div id="daumKakaoMap" class="map-container"></div>
@@ -728,9 +633,9 @@
             try { if (typeof Kakao !== 'undefined') Kakao.init('80c60a31a6631756bbf915ed70ed3e47'); } catch (e) {}
         })();
 
-        // 기본 변수 선언
+        // 기본 변수 선언 (갤러리 16장)
         let imgFolder = 'img_w';
-        let totalImgCount = 24;
+        let totalImgCount = 16; 
         let currentImgIdx = 1;
 
         // 스크롤 애니메이션 옵저버
@@ -748,48 +653,46 @@
             sections.forEach(section => observer.observe(section));
         }
 
-        // 테마 선택 시 실행 (이미지 폴더, BGM, 갤러리 개수 동적 처리)
+        // 테마 선택 시 실행 (이미지 폴더, BGM 동적 처리)
         function selectThemeAndOpen(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             document.getElementById('intro-cover').classList.add('hide');
             
             const bgmAudio = document.getElementById('bgm');
             const bgmTitle = document.getElementById('bgmTitle');
-            const galGroup6 = document.getElementById('galGroup6');
-            const dot6 = document.getElementById('dot6');
 
             if (theme === 'light') {
                 imgFolder = 'img_w';
-                totalImgCount = 24; // 🌟 하얀색: 24장
                 bgmAudio.src = '하나님의 사랑이(ver.피아노).mp3';
                 bgmTitle.innerText = 'BGM: 하나님의 사랑이(ver.피아노)';
-                if (galGroup6) galGroup6.style.display = 'grid';
-                if (dot6) dot6.style.display = 'inline-block';
             } else {
                 imgFolder = 'img_b';
-                totalImgCount = 20; // 🌟 검은색: 20장
                 bgmAudio.src = 'LANY - Out Of My League.mp3';
                 bgmTitle.innerText = 'BGM: LANY - Out Of My League';
-                if (galGroup6) galGroup6.style.display = 'none';
-                if (dot6) dot6.style.display = 'none';
             }
 
             // 주요 이미지 경로 변경
             document.getElementById('introImg').src = imgFolder + '/Thumbnail.jpg';
-            document.getElementById('mainImg').src = imgFolder + '/main.jpg';
-            document.getElementById('subImg1').src = imgFolder + '/sub1.jpg';
-            document.getElementById('subImg2').src = imgFolder + '/sub2.jpg';
-            document.getElementById('subImg3').src = imgFolder + '/sub3.jpg';
             document.getElementById('modalTrafficImg').src = imgFolder + '/traffic.jpg';
 
-            // 갤러리 이미지 경로 변경
+            // 🌟 8개의 풀 사이즈 메인 페이지 경로 스위칭 처리 🌟
+            document.getElementById('mainImg1').src = imgFolder + '/main1.jpg';
+            document.getElementById('mainImg2').src = imgFolder + '/main2.jpg';
+            document.getElementById('mainImg3').src = imgFolder + '/main3.jpg';
+            document.getElementById('mainImg4').src = imgFolder + '/main4.jpg';
+            document.getElementById('mainImg5').src = imgFolder + '/main5.jpg';
+            document.getElementById('mainImg6').src = imgFolder + '/main6.jpg';
+            document.getElementById('mainImg7').src = imgFolder + '/main7.jpg';
+            document.getElementById('mainImg8').src = imgFolder + '/main8.jpg';
+
+            // 갤러리 이미지(16장) 경로 변경
             const galImgs = document.querySelectorAll('.gal-img');
             galImgs.forEach(img => {
                 const num = img.getAttribute('data-num');
                 img.src = imgFolder + '/photo' + num + '.jpg';
             });
 
-            // 팝업 미니 썸네일 재구성 (totalImgCount에 맞춰 20개 또는 24개 생성)
+            // 팝업 미니 썸네일 재구성 (16장)
             renderPopupThumbs();
 
             document.getElementById('mainWrapper').classList.add('show');
