@@ -241,9 +241,6 @@
         .bgm-container { position: fixed; top: 20px; right: 20px; z-index: 1000; background: var(--bgm-bg); backdrop-filter: blur(5px); padding: 5px 12px; font-size: 10px; border: 1px solid var(--border-main); color: var(--bgm-text); display: none; border-radius: 4px; }
         .bgm-container button { border:none; background:none; cursor:pointer; color: var(--bgm-text); margin-left:5px; font-weight: bold; }
 
-        .main-sec { padding-top: 90px; }
-        .main-img { width: 100%; max-height: 500px; object-fit: cover; margin-bottom: 40px; }
-
         /* 🌟 커스텀 이미지를 꽉 채우는 전용 섹션 🌟 */
         section.full-img-sec {
             padding: 0 !important;
@@ -385,16 +382,7 @@
     <div class="wrapper" id="mainWrapper">
         <div class="container">
             
-            <section class="main-sec" style="padding-bottom: 40px;">
-                <!-- 🌟 Italianno 폰트 적용 🌟 -->
-                <h1 style="font-family: 'Italianno', cursive; font-size: 52px; margin-bottom: 5px; color: var(--text-title); font-weight: normal;">Happy Wedding Day</h1>
-                <img src="img_w/main.jpg" id="mainImg" class="main-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=500';">
-                <p class="main-names title-serif" style="margin-top:20px;">백승상 — 김효진</p>
-                <p style="margin-top:12px; font-size:13px; color:var(--text-muted);">수원 노블레스웨딩컨벤션 7층 컨벤션홀</p>
-                <p style="font-size:12px; color:var(--text-light); margin-bottom:10px; letter-spacing:0.15em;">2026. 10. 31. SAT. 11:00 AM</p>
-            </section>
-
-            <!-- 🌟 풀 사이즈 커스텀 메인 이미지 8장 연속 배치 🌟 -->
+            <!-- 🌟 풀 사이즈 커스텀 메인 이미지 8장 연속 배치 (첫 화면 텍스트 제거됨) 🌟 -->
             <section class="full-img-sec">
                 <img src="img_w/main1.jpg" id="mainImg1" class="full-width-img" loading="lazy" onerror="this.src='https://placehold.co/450x800?text=Main+1'">
             </section>
@@ -713,7 +701,6 @@
 
             // 주요 이미지 경로 변경
             document.getElementById('introImg').src = imgFolder + '/Thumbnail.jpg';
-            document.getElementById('mainImg').src = imgFolder + '/main.jpg';
             document.getElementById('modalTrafficImg').src = imgFolder + '/traffic.jpg';
 
             // 🌟 8개의 풀 사이즈 커스텀 페이지 경로 스위칭 처리 🌟
