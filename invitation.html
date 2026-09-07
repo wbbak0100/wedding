@@ -562,6 +562,17 @@
                 
                 <div style="background:var(--bg-container); border:1px solid var(--border-main); border-radius:8px; padding:20px; text-align:left;">
                     <div style="margin-bottom: 15px;">
+                        <label style="font-size:12px; font-weight:600; color:var(--text-strong);">구분</label>
+                        <div style="display:flex; gap:10px; margin-top:5px;">
+                            <label style="flex:1; font-size:13px; display:flex; align-items:center; gap:5px; cursor:pointer;">
+                                <input type="radio" name="rsvpSide" value="신랑 측" checked> 신랑 측
+                            </label>
+                            <label style="flex:1; font-size:13px; display:flex; align-items:center; gap:5px; cursor:pointer;">
+                                <input type="radio" name="rsvpSide" value="신부 측"> 신부 측
+                            </label>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
                         <label style="font-size:12px; font-weight:600; color:var(--text-strong);">성함</label>
                         <input type="text" id="rsvpName" placeholder="이름을 입력해주세요" style="width:100%; padding:12px; margin-top:5px; border:1px solid var(--border-main); border-radius:4px; font-size:13px; background:var(--bg-body); color:var(--text-base); outline:none;">
                     </div>
@@ -950,8 +961,9 @@
             else { bgm.pause(); btn.innerText = "PLAY"; }
         }
 
-        // 🌟 디스코드 웹훅 RSVP 전송 기능 (보안 경고 피하기 버전) 🌟
+        // 🌟 디스코드 웹훅 RSVP 전송 기능 (신랑측/신부측 구분 추가) 🌟
         function sendDiscordRSVP() {
+            const side = document.querySelector('input[name="rsvpSide"]:checked').value;
             const name = document.getElementById('rsvpName').value.trim();
             const attend = document.querySelector('input[name="rsvpAttend"]:checked').value;
             
@@ -970,7 +982,7 @@
             const webhookUrl = part1 + part2 + "/" + part3;
 
             const message = {
-                content: `💌 **새로운 RSVP 도착!**\n- **이름:** ${name}\n- **참석여부:** ${attend}`
+                content: `💌 **새로운 RSVP 도착!**\n- **구분:** ${side}\n- **이름:** ${name}\n- **참석여부:** ${attend}`
             };
 
             fetch(webhookUrl, {
